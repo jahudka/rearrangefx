@@ -1,0 +1,215 @@
+@import url(../node_modules/font-awesome/css/font-awesome.min.css);
+body,
+html {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font: 14px/21px "Arial", sans-serif;
+  color: #bababa;
+  background: #2b2b2b;
+  user-select: none;
+}
+body.dragging,
+body.dragging * {
+  cursor: move !important;
+}
+button:active,
+button:focus {
+  outline: none;
+}
+#main {
+  display: flex;
+  flex-flow: row nowrap;
+  width: 100vw;
+  height: 100vh;
+}
+#folders {
+  flex: 1 1 auto;
+}
+#plugins {
+  flex: 0 0 50%;
+  display: none;
+  border-left: 1px solid #777;
+}
+#plugins.visible {
+  display: block;
+}
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.list .item {
+  margin: 0;
+  padding: 0;
+}
+.list .item .item-panel {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}
+.list .item .item-panel .item-handle {
+  flex: 0 0 10px;
+  display: block;
+  font-size: 7px;
+  color: #777;
+  cursor: ns-resize;
+}
+.list .item .item-panel .item-label {
+  flex: 1 1 auto;
+  display: block;
+  margin: 0;
+  height: 21px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: default;
+}
+.list .item .item-panel .item-label[contenteditable]:focus {
+  outline-color: #E3BD6A;
+  user-select: text;
+}
+.list .item .item-panel .btn {
+  display: block;
+  margin: 0;
+  padding: 0 2px;
+  border: none;
+  background: none;
+  color: #777;
+  cursor: pointer;
+}
+.list .item .item-panel .btn.btn-toggle {
+  width: 12px;
+  font-size: 15px;
+}
+.list .item.dragging {
+  background: #353535;
+}
+.list .item.drag-target.drag-target-prev {
+  border-top: 1px solid #E3BD6A;
+}
+.list .item.drag-target.drag-target-next {
+  border-bottom: 1px solid #E3BD6A;
+}
+.list .item.drag-target.drag-target-next + .item {
+  border-top: none;
+}
+.list-main {
+  height: 100vh;
+  overflow-y: scroll;
+}
+.list-main .item-main {
+  padding: 5px;
+  border-top: 1px solid #444;
+}
+.list-main .item-main:last-child {
+  border-bottom: 1px solid #444;
+}
+.list-main .item-main > .item-panel .item-label {
+  font-weight: bold;
+}
+.list-main .item-main .list {
+  display: none;
+}
+.list-main .item-main.open > .item-panel > .btn-toggle::before {
+  content: "\f0d7";
+}
+.list-main .item-main.open .list {
+  display: block;
+}
+.list-main .item-main.drag-target:not(.drag-target-prev):not(.drag-target-next) {
+  background: #4a4a4a;
+}
+.list-main .item-main.drag-target:not(.drag-target-prev):not(.drag-target-next) .list-sub:empty,
+.list-main .item-main.drag-target:not(.drag-target-prev):not(.drag-target-next) .list-sub .item:last-child {
+  border-bottom: 1px solid #E3BD6A;
+}
+.list-sub {
+  margin: 5px 0 0;
+}
+.list-sub:empty {
+  border-bottom: 1px solid #2b2b2b;
+}
+.list-sub .item {
+  padding: 2px 5px;
+  border-top: 1px solid #2b2b2b;
+  background: #212121;
+}
+.list-sub .item:last-child {
+  border-bottom: 1px solid #2b2b2b;
+}
+#preferences-holder {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0);
+  transition: height 0.5s step-end, background 0.5s cubic-bezier(0.27, 0.78, 0.2, 0.98);
+}
+#preferences-holder.visible {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  transition: height 0.3s step-start, background 1s ease-out;
+}
+#preferences-holder.visible #preferences {
+  transform: translateY(0);
+}
+#preferences {
+  flex: 0 0 auto;
+  min-width: 80vw;
+  max-height: 100vh;
+  margin: 0 auto;
+  padding: 20px;
+  overflow-y: auto;
+  border: 1px solid #777;
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  background: #2b2b2b;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease-out;
+}
+#preferences .label {
+  display: block;
+}
+#preferences .inp {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #777;
+  border-radius: 0;
+  background: #212121;
+  font: inherit;
+  color: #bababa;
+}
+#preferences .inp:focus {
+  outline: none;
+}
+#preferences .text-center {
+  text-align: center;
+}
+#preferences .btn {
+  padding: 2px 5px;
+  border: 1px solid transparent;
+  border-radius: 5px;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  color: #bababa;
+}
+#preferences .btn:hover {
+  color: #fff;
+}
+#preferences .btn-main {
+  border: 1px solid #777;
+}
+#preferences .btn-main:hover {
+  border-color: #aaa;
+  background: #212121;
+}
