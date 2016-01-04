@@ -1,0 +1,32 @@
+{
+  "name": "RearrangeFX",
+  "version": "0.0.1",
+  "description": "Simplify REAPER FX Folders management",
+  "homepage": "https://rearrangefx.github.io",
+  "license": "MIT",
+  "author": {
+    "name": "Daniel Kadera",
+    "email": "me@subsonic.cz"
+  },
+  "repository": "jahudka/rearrangefx",
+  "dependencies": {
+    "font-awesome": "4.5.0",
+    "jquery": "2.1.4",
+    "lodash": "^3.10.1",
+    "promise": "7.1.1"
+  },
+  "main": "main.htm",
+  "window": {
+    "title": "RearrangeFX",
+    "icon": "icons/icon.png",
+    "toolbar": true,
+    "frame": true,
+    "width": 600,
+    "height": 700,
+    "position": "center",
+    "min_width": 400,
+    "min_height": 200,
+    "max_width": 800,
+    "fullscreen": false
+  }
+}

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>RearrangeFX</title>
+        <link rel="stylesheet" type="text/css" href="styles/styles.css" />
+    </head>
+    <body>
+        <div id="main">
+            <ul id="folders" class="list list-main"></ul>
+            <ul id="plugins" class="list list-main visible">
+                <li class="item item-main" id="plugins-js">
+                    <div class="item-panel">
+                        <span class="item-label">JS</span>
+                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                    </div>
+                    <ul class="list list-sub"></ul>
+                </li>
+                <li class="item item-main" id="plugins-vst">
+                    <div class="item-panel">
+                        <span class="item-label">VST</span>
+                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                    </div>
+                    <ul class="list list-sub"></ul>
+                </li>
+                <li class="item item-main" id="plugins-au">
+                    <div class="item-panel">
+                        <span class="item-label">AU</span>
+                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                    </div>
+                    <ul class="list list-sub"></ul>
+                </li>
+            </ul>
+        </div>
+
+        <div id="preferences-holder">
+            <div id="preferences">
+                <h4>Preferences</h4>
+
+                <p>
+                    <label for="preferences-dataPath">REAPER data path:</label>
+                    <input type="text" class="inp" id="preferences-dataPath" readonly />
+                    <input type="file" style="display:none;" id="preferences-pathPicker" nwdirectory />
+                    <small id="preferences-dataPath-error" style="display:none;">The specified path is not accessible or not a directory.</small>
+                </p>
+
+                <p class="text-center">
+                    <button type="button" class="btn btn-main">Ok</button>
+                    <button type="button" class="btn btn-text">Cancel</button>
+                </p>
+            </div>
+        </div>
+
+        <script type="text/javascript" src="node_modules/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="scripts/jquery.layers.js"></script>
+        <script type="text/javascript" src="scripts/jquery.dimmer.js"></script>
+        <script type="text/javascript" src="scripts/bootstrap.js"></script>
+        <script type="text/javascript" src="scripts/ini.js"></script>
+        <script type="text/javascript" src="scripts/menu.js"></script>
+        <script type="text/javascript" src="scripts/preferences.js"></script>
+        <script type="text/javascript" src="scripts/main.js"></script>
+    </body>
+</html>
