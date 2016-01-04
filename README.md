@@ -19,10 +19,40 @@ of my custom FX folders in REAPER via drag'n'drop.
 
 So, whaaaaat....?
 -----------------
-Download, unzip, run. If you have a really weird setup (ie. REAPER data directory doesn't sit at %appData%/REAPER),
+Download, unzip, run. If you have a really weird setup (ie. REAPER data directory doesn't sit at `%appData%/REAPER`),
 the app will start by showing you the Preferences pane, which surprisingly contains only one setting - the path
 to the REAPER data directory.
 
 The app shows two panels: on the left you have an expandable list showing your current folder structure, on the right
 there is a panel showing <del>all your available plugins</del> (actually, it only shows plugins which already are
-in at least one folder). Now you can drag your folders and plugins all you like. And, more importantly, so can I. 
+in at least one folder). Now you can drag your folders and plugins all you like. And, more importantly, so can I.
+
+Note that the app only works with the one `.ini` file which holds the custom FX folders structure. In other words,
+the app doesn't look for available plugins the way REAPER does; I'm not even remotely sure how would I go about doing
+that, and besides the result probably wouldn't work well enough to justify the amount of work I'd have to put in to even
+get close. As a result, as stated above, you can only ever work with plugins that you added to at least _one_ user 
+folder using the REAPER FX window. One easy way to work around this is that you can create a folder called "All plugins"
+and just drag all of your plugins into that folder within REAPER, then you can quit REAPER and do the rest of your
+adjustments using RearrangeFX.
+
+Contributing
+------------
+Just a couple of basic rules I'm sure you already know:
+ - fork & send pull-request
+ - don't add IDE project / workspace files to git, add them to .gitignore instead
+ - above all, respect .editorconfig!
+
+You'll need a nwjs runtime (get it at http://nwjs.io) and some node modules (`cd ./src && npm install`). Then you can
+run the app from a terminal using `nwjs .` (assuming your pwd is `./src`).
+
+Building the app is very easy using nwbuilder (cwd to project root):
+```
+npm install -g nw-builder
+nwbuild --platform osx32 --version 0.12.3 --macIcns src/icons/icon.icns src
+nwbuild --platform osx64 --version 0.12.3 --macIcns src/icons/icon.icns src
+nwbuild --platform win32 --version 0.12.3 --winIco src/icons/icon.ico src
+nwbuild --platform win64 --version 0.12.3 --winIco src/icons/icon.ico src
+```
+
+Note that to use the `--winIco` option you need to have Wine installed (assuming you're not a Windows person)
+and even then it might not necessarily work (it didn't for me).

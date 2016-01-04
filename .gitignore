@@ -100,4 +100,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Build directory
+/build
+
 # Created by .ignore support plugin (hsz.mobi)

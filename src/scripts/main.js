@@ -12,12 +12,14 @@
         $folders = $('#folders'),
         $plugins = $('#plugins'),
         $pluginLists = {
+            0: $('#plugins-dx'),
             2: $('#plugins-js'),
             3: $('#plugins-vst'),
             5: $('#plugins-au')
         };
 
     var pluginTypes = {
+            0: 'DX',
             2: 'JS',
             3: 'VST',
             5: 'AU'
@@ -33,6 +35,11 @@
         $pluginLists['5'].remove();
         delete $pluginLists['5'];
         delete pluginTypes['5'];
+
+    } else if (process.platform !== 'win32') {
+        $pluginLists['0'].remove();
+        delete $pluginLists['0'];
+        delete pluginTypes['0'];
 
     }
 
