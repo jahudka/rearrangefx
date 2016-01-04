@@ -15,7 +15,7 @@
     "lodash": "^3.10.1",
     "promise": "7.1.1"
   },
-  "main": "main.htm",
+  "main": "app://rearrangefx/main.htm",
   "window": {
     "title": "RearrangeFX",
     "icon": "icons/icon.png",

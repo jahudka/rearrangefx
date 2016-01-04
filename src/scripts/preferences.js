@@ -80,14 +80,13 @@
         var btn = $(this);
 
         if (btn.hasClass('btn-main') && $field.val() !== Rea.dataPath) {
-            window.localStorage.setItem('reaperDataPath', $field.val());
+            Rea.dataPath = $field.val();
+            window.localStorage.setItem('reaperDataPath', Rea.dataPath);
 
-            window.setTimeout(function () {
-                if (Rea.checkChanges()) {
-                    document.location.reload();
+            if (Rea.checkChanges()) {
+                Rea.init();
 
-                }
-            }, 300);
+            }
         }
 
         $preferences.removeClass('visible');

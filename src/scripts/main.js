@@ -620,20 +620,33 @@
 
 
 
-    Rea.dataPathCheck
-        .then(loadConfig)
-        .then(parseConfig)
-        .then(saveInitialState)
-        .then(populateFolders)
-        .then(populatePlugins)
-        .then(installToggleHandler)
-        .then(installEditHandler)
-        .then(installRemoveHandler)
-        .then(installReorderHandler)
-        .then(installInsertHandler)
-        .then(installHistoryHandlers)
-        .then(installFileHandlers)
-        .then(installViewHandlers)
+    Rea.init = function () {
+        $folders.add($plugins).off();
+        $folders.empty();
+        $plugins.find('.list').empty();
+        originalState = null;
+        dirty = false;
+        undo = [];
+        redo = [];
+
+        Rea.dataPathCheck
+            .then(loadConfig)
+            .then(parseConfig)
+            .then(saveInitialState)
+            .then(populateFolders)
+            .then(populatePlugins)
+            .then(installToggleHandler)
+            .then(installEditHandler)
+            .then(installRemoveHandler)
+            .then(installReorderHandler)
+            .then(installInsertHandler)
+            .then(installHistoryHandlers)
+            .then(installFileHandlers)
+            .then(installViewHandlers)
         ;
+
+    };
+
+    Rea.init();
 
 })();

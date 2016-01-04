@@ -126,6 +126,7 @@
         });
 
         mainMenu.items[0].submenu.insert(preferences, 2);
+        mainMenu.items[0].submenu.insert(new gui.MenuItem({type: 'separator'}), 3);
         mainMenu.insert(fileMenu, 1);
 
 

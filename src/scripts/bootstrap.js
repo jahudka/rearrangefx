@@ -20,7 +20,8 @@ var Rea = {
     editMenuIndex: null,
     openPreferences: function() {},
     togglePlugins: function() { return true; },
-    checkChanges: function() { return true; }
+    checkChanges: function() { return true; },
+    init: function() {}
 };
 
 gui.Window.get().focus();
