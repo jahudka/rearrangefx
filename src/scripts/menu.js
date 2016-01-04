@@ -138,6 +138,10 @@
         Rea.editMenuIndex = 2;
 
     } else {
+        fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
+        fileMenuItems.append(preferences);
+        fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
+
         fileMenuItems.append(new gui.MenuItem({
             type: 'normal',
             label: 'Quit',

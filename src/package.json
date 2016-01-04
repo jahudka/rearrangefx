@@ -19,7 +19,7 @@
   "window": {
     "title": "RearrangeFX",
     "icon": "icons/icon.png",
-    "toolbar": true,
+    "toolbar": false,
     "frame": true,
     "width": 600,
     "height": 700,
