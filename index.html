@@ -66,30 +66,9 @@ there is a panel showing <del>all your available plugins</del> (actually, it onl
 in at least one folder). Now you can drag your folders and plugins all you like. And, more importantly, so can I. </p>
 
 <h2>
-<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+<a id="more-info" class="anchor" href="#more-info" aria-hidden="true"><span class="octicon octicon-link"></span></a>More info</h2>
 
-<p>Just a couple of basic rules I'm sure you already know:</p>
-
-<ul>
-<li>fork &amp; send pull-request</li>
-<li>don't add IDE project / workspace files to git, add them to .gitignore instead</li>
-<li>above all, respect .editorconfig!</li>
-</ul>
-
-<p>You'll need a nwjs runtime (get it at <a href="http://nwjs.io">http://nwjs.io</a>) and some node modules (<code>cd ./src &amp;&amp; npm install</code>). Then you can
-run the app from a terminal using <code>nwjs .</code> (assuming your pwd is <code>./src</code>).</p>
-
-<p>Building the app is very easy using nwbuilder (cwd to project root):</p>
-
-<pre><code>npm install -g nw-builder
-nwbuild --platform osx32 --version 0.12.3 --macIcns src/icons/icon.icns src
-nwbuild --platform osx64 --version 0.12.3 --macIcns src/icons/icon.icns src
-nwbuild --platform win32 --version 0.12.3 --winIco src/icons/icon.ico src
-nwbuild --platform win64 --version 0.12.3 --winIco src/icons/icon.ico src
-</code></pre>
-
-<p>Note that to use the <code>--winIco</code> option you need to have Wine installed (assuming you're not a Windows person)
-and even then it might not necessarily work (it didn't for me).</p>
+<p>If you'd like to get more behind-the-scenes info on RearrangeFX, head straight over to the app's <a href="https://github.com/jahudka/rearrangefx">GitHub repo home</a>, there's a little more about the build process in the readme.</p>
       </section>
     </div>
 
@@ -101,7 +80,17 @@ and even then it might not necessarily work (it didn't for me).</p>
       </footer>
     </div>
 
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-72021901-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
 
   </body>
 </html>
