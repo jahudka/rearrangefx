@@ -498,8 +498,10 @@
         dirty = true;
         undo.push(state);
         redo.splice(0, redo.length);
-        gui.Window.get().menu.items[Rea.editMenuIndex].submenu.items[0].enabled = true;
-        gui.Window.get().menu.items[Rea.editMenuIndex].submenu.items[1].enabled = false;
+        Rea.toggleSave(true);
+        Rea.toggleRevert(true);
+        Rea.toggleUndo(true);
+        Rea.toggleRedo(false);
 
     }
 
@@ -519,6 +521,8 @@
             fs.writeFile(path.join(Rea.dataPath, 'reaper-fxfolders.ini'), data)
                 .then(function () {
                     dirty = false;
+                    Rea.toggleSave(false);
+                    Rea.toggleRevert(false);
 
                 }, function () {
                     // ??
@@ -537,8 +541,11 @@
                 undo.splice(0, undo.length);
                 redo.splice(0, redo.length);
                 dirty = false;
-                gui.Window.get().menu.items[Rea.editMenuIndex].submenu.items[0].enabled = false;
-                gui.Window.get().menu.items[Rea.editMenuIndex].submenu.items[1].enabled = false;
+
+                Rea.toggleSave(false);
+                Rea.toggleRevert(false);
+                Rea.toggleUndo(false);
+                Rea.toggleRedo(false);
 
             }
         };
@@ -566,7 +573,7 @@
         Rea.undo = function () {
             if (undo.length) {
                 redo.unshift(undo.pop());
-                gui.Window.get().menu.items[Rea.editMenuIndex].submenu.items[1].enabled = true;
+                Rea.toggleRedo(true);
 
             }
 
@@ -592,7 +599,7 @@
 
             if (state) {
                 undo.push(state);
-                gui.Window.get().menu.items[Rea.editMenuIndex].submenu.items[0].enabled = true;
+                Rea.toggleUndo(true);
 
                 $folders.empty();
 

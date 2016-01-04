@@ -10,29 +10,60 @@
     // File menu
     var fileMenuItems = new gui.Menu();
 
-    fileMenuItems.append(new gui.MenuItem({
+
+
+
+
+    var save = new gui.MenuItem({
         type: 'normal',
         label: 'Save changes',
         key: 's',
         modifiers: cmdKey,
+        enabled: false,
         click: function () {
             Rea.save();
 
         }
-    }));
+    });
 
-    fileMenuItems.append(new gui.MenuItem({
+    Rea.toggleSave = function (enabled) {
+        save.enabled = enabled;
+
+    };
+
+    fileMenuItems.append(save);
+
+
+
+
+    var revert = new gui.MenuItem({
         type: 'normal',
         label: 'Revert changes',
         key: 'r',
         modifiers: cmdKey,
+        enabled: false,
         click: function () {
             Rea.revert();
 
         }
-    }));
+    });
+
+    Rea.toggleRevert = function (enabled) {
+        revert.enabled = enabled;
+
+    };
+
+    fileMenuItems.append(revert);
+
+
+
+
 
     fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
+
+
+
+
 
     fileMenuItems.append(new gui.MenuItem({
         type: 'normal',
@@ -49,6 +80,8 @@
         label: 'File',
         submenu: fileMenuItems
     });
+
+
 
 
 
@@ -73,6 +106,7 @@
         label: 'View',
         submenu: viewMenuItems
     });
+
 
 
 
@@ -106,6 +140,11 @@
         }
     });
 
+    Rea.toggleUndo = function(enabled) {
+        undo.enabled = enabled;
+
+    };
+
     var redo = new gui.MenuItem({
         type: 'normal',
         label: 'Redo',
@@ -117,6 +156,11 @@
 
         }
     });
+
+    Rea.toggleRedo = function (enabled) {
+        redo.enabled = enabled;
+
+    };
 
     // main setup
 
