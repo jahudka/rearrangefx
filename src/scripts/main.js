@@ -15,14 +15,20 @@
             0: $('#plugins-dx'),
             2: $('#plugins-js'),
             3: $('#plugins-vst'),
-            5: $('#plugins-au')
+            4: $('#plugins-rewire'),
+            5: $('#plugins-au'),
+            6: $('#plugins-other'),
+            1000: $('#plugins-chains')
         };
 
     var pluginTypes = {
             0: 'DX',
             2: 'JS',
             3: 'VST',
-            5: 'AU'
+            4: 'ReWire',
+            5: 'AU',
+            6: 'Others',
+            1000: 'FX Chain'
         };
 
     var originalState = null,
@@ -73,7 +79,7 @@
 
     function parseConfig(config) {
         var folders = [],
-            registry = {2: {}, 3: {}, 5: {}},
+            registry = {2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 1000: {}},
             folder, plugins, f, nf, p, np, type, id;
 
         if (!config.Folders || !config.Folders.NbFolders) {
@@ -657,6 +663,11 @@
             .then(installHistoryHandlers)
             .then(installFileHandlers)
             .then(installViewHandlers)
+            /*.catch(function(err) {
+                console.error(err);
+                gui.Window.get().showDevTools();
+
+            })*/
         ;
 
     };
