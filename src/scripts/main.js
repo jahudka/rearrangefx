@@ -260,6 +260,14 @@
 
             label.prop('contenteditable', true).trigger('focus');
 
+            var range = document.createRange(),
+                sel = window.getSelection();
+
+            range.selectNodeContents(label.get(0));
+            range.collapse(false);
+            sel.removeAllRanges();
+            sel.addRange(range);
+
         });
     }
 
@@ -277,7 +285,7 @@
         $folders.on('mousedown', function (evt) {
             var t = $(evt.target);
 
-            if (t.is('button') || t.prop('contentEditable')) {
+            if (t.is('button') || t.prop('isContentEditable')) {
                 return;
 
             }
@@ -687,13 +695,13 @@
             .then(installHistoryHandlers)
             .then(installFileHandlers)
             .then(installViewHandlers)
-            /*.catch(function(err) {
+            .catch(function(err) {
                 console.error(err);
 
-            })*/
+            })
         ;
 
-        //gui.Window.get().showDevTools();
+        gui.Window.get().showDevTools();
 
     };
 
