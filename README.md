@@ -54,5 +54,6 @@ nwbuild --platform win32 --version 0.12.3 --winIco src/icons/icon.ico src
 nwbuild --platform win64 --version 0.12.3 --winIco src/icons/icon.ico src
 ```
 
-Note that to use the `--winIco` option you need to have Wine installed (assuming you're not a Windows person)
-and even then it might not necessarily work (it didn't for me).
+Note that to use the `--winIco` option you need to have Wine installed (assuming you're not a Windows person). If you're
+running OS X, head over to https://dl.winehq.org/wine-builds/macosx/i686/ and download the latest package of Wine Devel 
+and then run the build commands from the Wine terminal (which you get by launching the Wine Devel app).
