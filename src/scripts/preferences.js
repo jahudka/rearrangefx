@@ -1,21 +1,36 @@
 (function () {
 
     Rea.dataPath = window.localStorage.getItem('reaperDataPath');
+    Rea.createBackup = window.localStorage.getItem('createBackup');
 
     if (!Rea.dataPath) {
         Rea.dataPath = path.join(path.dirname(gui.App.dataPath), 'REAPER');
 
     }
 
+    if (Rea.createBackup === null) {
+        Rea.createBackup = '1';
+        window.localStorage.setItem('createBackup', '1');
+
+    }
+
+    Rea.createBackup = !!Rea.createBackup;
+
     var $preferences = $('#preferences-holder'),
-        $field = $('#preferences-dataPath'),
-        $picker = $('#preferences-pathPicker'),
-        $error = $('#preferences-dataPath-error');
+        $dataPathField = $('#preferences-dataPath'),
+        $dataPathPicker = $('#preferences-pathPicker'),
+        $dataPathError = $('#preferences-dataPath-error'),
+        $createBackup = $('#preferences-createBackup');
 
 
     Rea.openPreferences = function () {
-        $preferences.hasClass('visible') || $preferences.addClass('visible');
+        if (!$preferences.hasClass('visible')) {
+            $dataPathField.val(Rea.dataPath);
+            $dataPathPicker.attr('nwworkingdir', Rea.dataPath);
+            $createBackup.prop('checked', Rea.createBackup);
+            $preferences.addClass('visible');
 
+        }
     };
 
 
@@ -24,7 +39,7 @@
             .then(function (stat) {
                 if (!stat.isDirectory()) {
                     $preferences.addClass('visible');
-                    $error.css('display', '');
+                    $dataPathError.css('display', '');
                     reject();
 
                 } else {
@@ -33,44 +48,40 @@
                 }
             }, function () {
                 $preferences.addClass('visible');
-                $error.css('display', '');
+                $dataPathError.css('display', '');
                 reject();
 
             });
     });
 
-
-    $field.val(Rea.dataPath);
-    $picker.attr('nwworkingdir', Rea.dataPath);
-
-    $field.on('click', function (evt) {
+    $dataPathField.on('click', function (evt) {
         evt.preventDefault();
-        $picker.trigger('click');
+        $dataPathPicker.trigger('click');
 
     });
 
-    $picker.on('change', function () {
+    $dataPathPicker.on('change', function () {
         if (this.files.length) {
             var path = this.files.item(0).path;
-            $field.val(path);
-            $picker.attr('nwworkingdir', path);
+            $dataPathField.val(path);
+            $dataPathPicker.attr('nwworkingdir', path);
 
             fs.stat(path)
                 .then(function (stat) {
                     if (stat.isDirectory()) {
-                        $error.css('display', 'none');
+                        $dataPathError.css('display', 'none');
 
                     } else {
-                        $error.css('display', '');
+                        $dataPathError.css('display', '');
 
                     }
                 }, function () {
-                    $error.css('display', '');
+                    $dataPathError.css('display', '');
 
                 });
         }
 
-        $picker.val('');
+        $dataPathPicker.val('');
 
     });
 
@@ -79,13 +90,18 @@
 
         var btn = $(this);
 
-        if (btn.hasClass('btn-main') && $field.val() !== Rea.dataPath) {
-            Rea.dataPath = $field.val();
-            window.localStorage.setItem('reaperDataPath', Rea.dataPath);
+        if (btn.hasClass('btn-main')) {
+            Rea.createBackup = $createBackup.prop('checked');
+            window.localStorage.setItem('createBackup', Rea.createBackup ? '1' : '');
 
-            if (Rea.checkChanges()) {
-                Rea.init();
+            if ($dataPathField.val() !== Rea.dataPath) {
+                Rea.dataPath = $dataPathField.val();
+                window.localStorage.setItem('reaperDataPath', Rea.dataPath);
 
+                if (Rea.checkChanges()) {
+                    Rea.init();
+
+                }
             }
         }
 

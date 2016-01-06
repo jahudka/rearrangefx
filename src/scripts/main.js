@@ -543,6 +543,49 @@
     }
 
 
+    function backupFile() {
+        return new Promise(function (fulfill, reject) {
+            var rs = fs.createReadStream(path.join(Rea.dataPath, 'reaper-fxfolders.ini')),
+                ws = fs.createWriteStream(path.join(Rea.dataPath, 'reaper-fxfolders.ini.bak'));
+
+            rs.on('error', function () {
+                reject();
+
+            });
+
+            ws.on('error', function () {
+                reject();
+
+            });
+
+            ws.on('close', function () {
+                fulfill();
+
+            });
+
+            rs.pipe(ws);
+
+        });
+    }
+
+
+    function saveFile() {
+        var data = serializeData();
+        data = formatIniData(data);
+        data = ini.stringify(data);
+
+        return fs.writeFile(path.join(Rea.dataPath, 'reaper-fxfolders.ini'), data)
+            .then(function () {
+                dirty = false;
+                Rea.toggleSave(false);
+                Rea.toggleRevert(false);
+
+            }, function () {
+                // ??
+            });
+    }
+
+
 
     function installFileHandlers() {
         Rea.save = function () {
@@ -551,20 +594,13 @@
 
             }
 
-            var data = serializeData();
-            data = formatIniData(data);
-            data = ini.stringify(data);
+            if (Rea.createBackup) {
+                backupFile().then(saveFile);
 
-            fs.writeFile(path.join(Rea.dataPath, 'reaper-fxfolders.ini'), data)
-                .then(function () {
-                    dirty = false;
-                    Rea.toggleSave(false);
-                    Rea.toggleRevert(false);
+            } else {
+                saveFile();
 
-                }, function () {
-                    // ??
-                });
-
+            }
         };
 
         Rea.revert = function () {

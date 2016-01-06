@@ -12,6 +12,7 @@ _.each(['readFile', 'writeFile', 'stat', 'access'], function (method) {
 var Rea = {
     dataPath: null,
     dataPathCheck: null,
+    createBackup: null,
     save: function() {},
     toggleSave: function(enabled) {},
     revert: function() {},
