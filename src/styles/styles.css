@@ -33,21 +33,33 @@ button:focus {
   border-left: 1px solid #777;
 }
 #plugins-panel.visible {
-  display: block;
+  display: flex;
 }
 .panel-main {
+  display: flex;
+  flex-flow: column nowrap;
   height: 100vh;
+}
+.panel-main .panel-heading {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 10px 5px;
+  background: #212121;
+}
+.panel-main .panel-content {
+  flex: 1 1 auto;
   overflow-y: scroll;
 }
-.panel-main h3,
-.panel-main .hint {
-  padding: 0 5px;
+.panel-main .panel-footer {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 5px;
+  text-align: center;
 }
 .panel-main .hint {
   color: #5a5a5a;
   font-size: 0.8em;
   font-style: italic;
-  text-align: center;
 }
 .list {
   list-style: none;

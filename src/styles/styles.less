@@ -36,23 +36,38 @@ button:active, button:focus {
     border-left: 1px solid #777;
 
     &.visible {
-        display: block;
+        display: flex;
     }
 }
 
 .panel-main {
+    display: flex;
+    flex-flow: column nowrap;
     height: 100vh;
-    overflow-y: scroll;
 
-    h3, .hint {
-        padding: 0 5px;
+    .panel-heading {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 10px 5px;
+        background: #212121;
+    }
+
+    .panel-content {
+        flex: 1 1 auto;
+        overflow-y: scroll;
+    }
+
+    .panel-footer {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 5px;
+        text-align: center;
     }
 
     .hint {
         color: #5a5a5a;
         font-size: 0.8em;
         font-style: italic;
-        text-align: center;
     }
 }
 
