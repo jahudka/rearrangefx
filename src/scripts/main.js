@@ -185,17 +185,23 @@
         var $elm = $(templates.item);
 
         $elm.data('type', type);
-
-        $elm.find('.list, .btn-toggle').remove();
-        $elm.find('.item-label').text(id);
+        $elm.data('id', id);
 
         if (type in pluginTypes) {
             $elm.find('.btn-edit').remove();
 
+            if (parseInt(type) === 3) {
+                // remove path & extension from VST plugin label
+                id = id.replace(/^.+?([^/]+?)\.[^.<]+(<.+)?$/, '$1$2');
+
+            }
         } else {
-            $elm.find('.btn-remove').remove();
+            $elm.find('.item-handle, .btn-remove').remove();
 
         }
+
+        $elm.find('.list, .btn-toggle').remove();
+        $elm.find('.item-label').text(id);
 
         if (folder) {
             folder.children('.list').append($elm);
@@ -233,6 +239,12 @@
                         label.text(orig);
 
                     } else {
+                        if (!item.hasClass('item-main')) {
+                            // smart folder filter
+                            item.data('id', label.text());
+
+                        }
+
                         saveState();
 
                     }
@@ -413,10 +425,10 @@
 
                 if (target) {
                     if (target.hasClass('item-main')) {
-                        addPlugin(elm.data('type'), elm.find('.item-label').text(), target);
+                        addPlugin(elm.data('type'), elm.data('id'), target);
 
                     } else {
-                        addPlugin(elm.data('type'), elm.find('.item-label').text(), null, target);
+                        addPlugin(elm.data('type'), elm.data('id'), null, target);
 
                     }
 
@@ -452,7 +464,7 @@
                 var $elm = $(this),
                     plugin = {
                         type: $elm.data('type'),
-                        id: $elm.find('> .item-panel > .item-label').text()
+                        id: $elm.data('id')
                     };
 
                 folder.plugins.push(plugin);
@@ -675,13 +687,13 @@
             .then(installHistoryHandlers)
             .then(installFileHandlers)
             .then(installViewHandlers)
-            .catch(function(err) {
+            /*.catch(function(err) {
                 console.error(err);
 
-            })
+            })*/
         ;
 
-        gui.Window.get().showDevTools();
+        //gui.Window.get().showDevTools();
 
     };
 
