@@ -3,7 +3,10 @@
 
     $.layers.add('dimmer', 100);
     $.dimmer.setDefaults({
-        layer: $.layers.get('dimmer')
+        layer: $.layers.get('dimmer'),
+        showSpeed: 400,
+        hideSpeed: 200,
+        opacity: 0.6
     });
 
 
@@ -11,6 +14,7 @@
         $b = $(document.body),
         $folders = $('#folders'),
         $plugins = $('#plugins'),
+        $pluginsPanel = $('#plugins-panel'),
         $pluginLists = {
             0: $('#plugins-dx'),
             2: $('#plugins-js'),
@@ -261,7 +265,7 @@
         $folders.on('mousedown', function (evt) {
             var t = $(evt.target);
 
-            if (t.is('button, [contenteditable]')) {
+            if (t.is('button') || t.prop('contentEditable')) {
                 return;
 
             }
@@ -563,8 +567,16 @@
             }
         };
 
-        Rea.newFolder = function () {
-            addFolder('').find('.btn-edit').trigger('click');
+        Rea.newFolder = function (smart) {
+            var folder = addFolder('', smart);
+
+            if (smart) {
+                addPlugin(1048576, '', folder);
+                folder.addClass('open');
+
+            }
+
+            folder.find('.btn-edit').first().trigger('click');
 
         };
 
@@ -632,8 +644,8 @@
 
     function installViewHandlers() {
         Rea.togglePlugins = function () {
-            $plugins.toggleClass('visible');
-            return $plugins.hasClass('visible');
+            $pluginsPanel.toggleClass('visible');
+            return $pluginsPanel.hasClass('visible');
 
         };
     }
@@ -663,12 +675,13 @@
             .then(installHistoryHandlers)
             .then(installFileHandlers)
             .then(installViewHandlers)
-            /*.catch(function(err) {
+            .catch(function(err) {
                 console.error(err);
-                gui.Window.get().showDevTools();
 
-            })*/
+            })
         ;
+
+        gui.Window.get().showDevTools();
 
     };
 

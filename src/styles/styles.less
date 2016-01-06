@@ -8,7 +8,7 @@ body, html {
     font: 14px/21px "Arial", sans-serif;
     color: #bababa;
     background: #2b2b2b;
-    user-select: none;
+    -webkit-user-select: none;
 }
 
 body.dragging, body.dragging * {
@@ -26,17 +26,33 @@ button:active, button:focus {
     height: 100vh;
 }
 
-#folders {
+#folders-panel {
     flex: 1 1 auto;
 }
 
-#plugins {
+#plugins-panel {
     flex: 0 0 50%;
     display: none;
     border-left: 1px solid #777;
 
     &.visible {
         display: block;
+    }
+}
+
+.panel-main {
+    height: 100vh;
+    overflow-y: scroll;
+
+    h3, .hint {
+        padding: 0 5px;
+    }
+
+    .hint {
+        color: #5a5a5a;
+        font-size: 0.8em;
+        font-style: italic;
+        text-align: center;
     }
 }
 
@@ -72,9 +88,9 @@ button:active, button:focus {
                 white-space: nowrap;
                 cursor: default;
 
-                &[contenteditable]:focus {
+                &:focus {
                     outline-color: #E3BD6A;
-                    user-select: text;
+                    -webkit-user-select: text;
                 }
             }
 
@@ -116,9 +132,6 @@ button:active, button:focus {
 }
 
 .list-main {
-    height: 100vh;
-    overflow-y: scroll;
-
     .item-main {
         padding: 5px;
         border-top: 1px solid #444;

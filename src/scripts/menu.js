@@ -71,7 +71,18 @@
         key: 'n',
         modifiers: cmdKey,
         click: function () {
-            Rea.newFolder();
+            Rea.newFolder(false);
+
+        }
+    }));
+
+    fileMenuItems.append(new gui.MenuItem({
+        type: 'normal',
+        label: 'New Smart folder',
+        key: 'N',
+        modifiers: cmdKey,
+        click: function () {
+            Rea.newFolder(true);
 
         }
     }));

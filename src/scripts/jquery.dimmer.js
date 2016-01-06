@@ -102,20 +102,19 @@
 
             scrollLock = o.scrollLock;
             preventDnD = o.preventDnD;
+            visible = true;
             o.beforeShow.call(elm[0]);
 
             if (!o.showSpeed) {
                 elm.css({
                     opacity: o.opacity
                 });
-                visible = true;
                 o.afterShow.call(elm[0]);
 
             } else {
-                elm.animate({
+                elm.stop(true).animate({
                     opacity: o.opacity
                 }, o.showSpeed, function () {
-                    visible = true;
                     o.afterShow.call(elm[0]);
                 });
 
@@ -133,6 +132,7 @@
 
             scrollLock = false;
             preventDnD = false;
+            visible = false;
             o.beforeHide.call(elm[0]);
 
             if (!o.hideSpeed) {
@@ -140,15 +140,13 @@
                     opacity: 0
                 });
 
-                visible = false;
                 o.afterHide.call(elm[0]);
                 elm.empty().detach().off('.dimmer');
 
             } else {
-                elm.animate({
+                elm.stop(true).animate({
                     opacity : 0
                 }, o.hideSpeed, function() {
-                    visible = false;
                     o.afterHide.call(elm[0]);
                     elm.empty().detach().off('.dimmer');
                 });

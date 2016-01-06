@@ -16,7 +16,7 @@ var Rea = {
     toggleSave: function(enabled) {},
     revert: function() {},
     toggleRevert: function(enabled) {},
-    newFolder: function() {},
+    newFolder: function(smart) {},
     undo: function() {},
     toggleUndo: function(enabled) {},
     redo: function() {},

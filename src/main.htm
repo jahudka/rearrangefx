@@ -7,58 +7,67 @@
     </head>
     <body>
         <div id="main">
-            <ul id="folders" class="list list-main"></ul>
-            <ul id="plugins" class="list list-main visible">
-                <li class="item item-main" id="plugins-js">
-                    <div class="item-panel">
-                        <span class="item-label">JS</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-                <li class="item item-main" id="plugins-dx">
-                    <div class="item-panel">
-                        <span class="item-label">DX</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-                <li class="item item-main" id="plugins-vst">
-                    <div class="item-panel">
-                        <span class="item-label">VST</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-                <li class="item item-main" id="plugins-au">
-                    <div class="item-panel">
-                        <span class="item-label">AU</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-                <li class="item item-main" id="plugins-rewire">
-                    <div class="item-panel">
-                        <span class="item-label">ReWire</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-                <li class="item item-main" id="plugins-chains">
-                    <div class="item-panel">
-                        <span class="item-label">FX Chains</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-                <li class="item item-main" id="plugins-other">
-                    <div class="item-panel">
-                        <span class="item-label">Other</span>
-                        <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
-                    </div>
-                    <ul class="list list-sub"></ul>
-                </li>
-            </ul>
+            <div id="folders-panel" class="panel-main">
+                <h3>FX Folders</h3>
+                <ul id="folders" class="list list-main"></ul>
+            </div>
+            <div id="plugins-panel" class="panel-main visible">
+                <h3>Available plugins</h3>
+                <ul id="plugins" class="list list-main">
+                    <li class="item item-main" id="plugins-js">
+                        <div class="item-panel">
+                            <span class="item-label">JS</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                    <li class="item item-main" id="plugins-dx">
+                        <div class="item-panel">
+                            <span class="item-label">DX</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                    <li class="item item-main" id="plugins-vst">
+                        <div class="item-panel">
+                            <span class="item-label">VST</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                    <li class="item item-main" id="plugins-au">
+                        <div class="item-panel">
+                            <span class="item-label">AU</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                    <li class="item item-main" id="plugins-rewire">
+                        <div class="item-panel">
+                            <span class="item-label">ReWire</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                    <li class="item item-main" id="plugins-chains">
+                        <div class="item-panel">
+                            <span class="item-label">FX Chains</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                    <li class="item item-main" id="plugins-other">
+                        <div class="item-panel">
+                            <span class="item-label">Other</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
+                </ul>
+                <p class="hint">
+                    Drag plugins from this list to add them to folders
+                </p>
+            </div>
         </div>
 
         <div id="preferences-holder">
