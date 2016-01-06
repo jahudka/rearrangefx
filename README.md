@@ -20,8 +20,7 @@ of my custom FX folders in REAPER via drag'n'drop.
 So, whaaaaat....?
 -----------------
 Download, unzip, run. If you have a really weird setup (ie. REAPER data directory doesn't sit at `%appData%/REAPER`),
-the app will start by showing you the Preferences pane, which surprisingly contains only one setting - the path
-to the REAPER data directory.
+the app will start by showing you the Preferences pane.
 
 The app shows two panels: on the left you have an expandable list showing your current folder structure, on the right
 there is a panel showing <del>all your available plugins</del> (actually, it only shows plugins which already are
