@@ -215,11 +215,15 @@
 
 
     function installToggleHandler() {
-        $folders.add($plugins).on('click', '.btn-toggle', function (evt) {
+        function handleToggle(evt) {
             evt.preventDefault();
             $(this).closest('.item-main').toggleClass('open');
 
-        });
+        }
+
+        $folders.add($plugins).on('click', '.btn-toggle', handleToggle);
+        $plugins.on('click', '> .item-main > .item-panel > .item-label', handleToggle);
+
     }
 
     function installEditHandler() {
@@ -294,7 +298,8 @@
 
             var elm = t.closest('.item'),
                 scope = elm.closest('.list'),
-                target = null;
+                target = null,
+                dragged = false;
 
             elm.addClass('dragging');
             $b.addClass('dragging');
@@ -320,6 +325,8 @@
             }
 
             function handleLeave() {
+                dragged = true;
+
                 if (target) {
                     target.removeClass('drag-target drag-target-prev drag-target-next');
                     target = null;
@@ -351,6 +358,9 @@
                     target.removeClass('drag-target drag-target-prev drag-target-next');
 
                     saveState();
+
+                } else if (!dragged && elm.hasClass('item-main')) {
+                    elm.find('> .item-panel > .btn-toggle').trigger('click');
 
                 }
             });
