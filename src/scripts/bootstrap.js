@@ -13,6 +13,7 @@ var Rea = {
     dataPath: null,
     dataPathCheck: null,
     createBackup: null,
+    checkUpdates: null,
     save: function() {},
     toggleSave: function(enabled) {},
     revert: function() {},

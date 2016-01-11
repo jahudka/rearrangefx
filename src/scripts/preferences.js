@@ -2,10 +2,16 @@
 
     Rea.dataPath = window.localStorage.getItem('reaperDataPath');
     Rea.createBackup = window.localStorage.getItem('createBackup');
+    Rea.checkUpdates = window.localStorage.getItem('checkUpdates');
 
     if (!Rea.dataPath) {
-        Rea.dataPath = path.join(path.dirname(gui.App.dataPath), 'REAPER');
+        if (process.platform === 'win32') {
+            Rea.dataPath = path.join(path.dirname(path.dirname(gui.App.dataPath)), 'Roaming', 'REAPER');
 
+        } else {
+            Rea.dataPath = path.join(path.dirname(gui.App.dataPath), 'REAPER');
+
+        }
     }
 
     if (Rea.createBackup === null) {
@@ -14,13 +20,21 @@
 
     }
 
+    if (Rea.checkUpdates === null) {
+        Rea.checkUpdates = '0';
+        window.localStorage.setItem('checkUpdates', '0');
+
+    }
+
     Rea.createBackup = !!Rea.createBackup;
+    Rea.checkUpdates = parseInt(Rea.checkUpdates);
 
     var $preferences = $('#preferences-holder'),
         $dataPathField = $('#preferences-dataPath'),
         $dataPathPicker = $('#preferences-pathPicker'),
         $dataPathError = $('#preferences-dataPath-error'),
-        $createBackup = $('#preferences-createBackup');
+        $createBackup = $('#preferences-createBackup'),
+        $checkUpdates = $('#preferences-checkUpdates');
 
 
     Rea.openPreferences = function () {
@@ -28,6 +42,7 @@
             $dataPathField.val(Rea.dataPath);
             $dataPathPicker.attr('nwworkingdir', Rea.dataPath);
             $createBackup.prop('checked', Rea.createBackup);
+            $checkUpdates.prop('checked', Rea.checkUpdates < Number.MAX_VALUE);
             $preferences.addClass('visible');
 
         }
@@ -92,7 +107,9 @@
 
         if (btn.hasClass('btn-main')) {
             Rea.createBackup = $createBackup.prop('checked');
+            Rea.checkUpdates = $checkUpdates.prop('checked') ? 0 : Number.MAX_VALUE;
             window.localStorage.setItem('createBackup', Rea.createBackup ? '1' : '');
+            window.localStorage.setItem('checkUpdates', Rea.checkUpdates + '');
 
             if ($dataPathField.val() !== Rea.dataPath) {
                 Rea.dataPath = $dataPathField.val();

@@ -203,7 +203,7 @@ button:active, button:focus {
     }
 }
 
-#preferences-holder {
+.dialog-holder {
     display: flex;
     flex-flow: column nowrap;
     justify-content: flex-start;
@@ -222,13 +222,13 @@ button:active, button:focus {
         background: rgba(0, 0, 0, 0.6);
         transition: height 0.3s step-start, background 1s ease-out;
 
-        #preferences {
+        .dialog-content {
             transform: translateY(0);
         }
     }
 }
 
-#preferences {
+.dialog-content {
     flex: 0 0 auto;
     min-width: 80vw;
     max-height: 100vh;

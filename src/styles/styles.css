@@ -162,7 +162,7 @@ button:focus {
 .list-sub .item:last-child {
   border-bottom: 1px solid #2b2b2b;
 }
-#preferences-holder {
+.dialog-holder {
   display: flex;
   flex-flow: column nowrap;
   justify-content: flex-start;
@@ -176,15 +176,15 @@ button:focus {
   background: rgba(0, 0, 0, 0);
   transition: height 0.5s step-end, background 0.5s cubic-bezier(0.27, 0.78, 0.2, 0.98);
 }
-#preferences-holder.visible {
+.dialog-holder.visible {
   height: 100%;
   background: rgba(0, 0, 0, 0.6);
   transition: height 0.3s step-start, background 1s ease-out;
 }
-#preferences-holder.visible #preferences {
+.dialog-holder.visible .dialog-content {
   transform: translateY(0);
 }
-#preferences {
+.dialog-content {
   flex: 0 0 auto;
   min-width: 80vw;
   max-height: 100vh;
@@ -198,10 +198,10 @@ button:focus {
   transform: translateY(-100%);
   transition: transform 0.3s ease-out;
 }
-#preferences .label {
+.dialog-content .label {
   display: block;
 }
-#preferences .inp {
+.dialog-content .inp {
   display: block;
   box-sizing: border-box;
   width: 100%;
@@ -211,13 +211,13 @@ button:focus {
   font: inherit;
   color: #bababa;
 }
-#preferences .inp:focus {
+.dialog-content .inp:focus {
   outline: none;
 }
-#preferences .text-center {
+.dialog-content .text-center {
   text-align: center;
 }
-#preferences .btn {
+.dialog-content .btn {
   padding: 2px 5px;
   border: 1px solid transparent;
   border-radius: 5px;
@@ -226,13 +226,13 @@ button:focus {
   font: inherit;
   color: #bababa;
 }
-#preferences .btn:hover {
+.dialog-content .btn:hover {
   color: #fff;
 }
-#preferences .btn-main {
+.dialog-content .btn-main {
   border: 1px solid #777;
 }
-#preferences .btn-main:hover {
+.dialog-content .btn-main:hover {
   border-color: #aaa;
   background: #212121;
 }
