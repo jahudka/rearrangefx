@@ -742,12 +742,12 @@
             .then(installFileHandlers)
             .then(installViewHandlers)
             .catch(function(err) {
-                console.error(err);
+                //console.error(err);
 
             })
         ;
 
-        gui.Window.get().showDevTools();
+        //gui.Window.get().showDevTools();
 
     };
 
