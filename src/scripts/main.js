@@ -23,7 +23,10 @@
             5: $('#plugins-au'),
             6: $('#plugins-other'),
             1000: $('#plugins-chains')
-        };
+        },
+        reVstPath = process.platform === 'win32'
+            ? /^.+?([^\\]+?)\.[^.<]+(<.+)?$/
+            : /^.+?([^/]+?)\.[^.<]+(<.+)?$/;
 
     var pluginTypes = {
             0: 'DX',
@@ -192,7 +195,7 @@
 
             if (parseInt(type) === 3) {
                 // remove path & extension from VST plugin label
-                id = id.replace(/^.+?([^/]+?)\.[^.<]+(<.+)?$/, '$1$2');
+                id = id.replace(reVstPath, '$1$2');
 
             }
         } else {
@@ -559,7 +562,7 @@
                 ws = fs.createWriteStream(path.join(Rea.dataPath, 'reaper-fxfolders.ini.bak'));
 
             rs.on('error', function () {
-                reject();
+                fulfill();
 
             });
 
