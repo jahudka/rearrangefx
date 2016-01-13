@@ -2,6 +2,7 @@
  - fixed stripping VST plugin path and extension on Windows
  - removed max window width constraint
  - fixed bug in creating backup file which prevented saving when there was previously no reaper-fxfolders.ini file
+ - now showing changelog when an update is available
 
 ### v0.0.7
  - an automatic update checking facility has been added, can be turned off in preferences

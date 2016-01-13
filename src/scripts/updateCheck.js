@@ -23,6 +23,9 @@
 
     });
 
+    // https://raw.githubusercontent.com/jahudka/rearrangefx/master/CHANGELOG.md
+    // https://raw.githubusercontent.com/jahudka/rearrangefx/v0.0.7/README.md
+
     var options = {
         method: 'GET',
         protocol: 'https:',
@@ -31,7 +34,7 @@
         agent: false
     };
 
-    var request = https.request(options, function (response) {
+    https.request(options, function (response) {
         Rea.checkUpdates = Date.now() + 43200;
         window.localStorage.setItem('checkUpdates', Rea.checkUpdates + '');
 
@@ -45,13 +48,37 @@
                 packageJson = require('./package.json');
 
                 if (availableVersion !== packageJson.version) {
-                    holder.addClass('visible');
+                    var options = {
+                        method: 'GET',
+                        protocol: 'https:',
+                        hostname: 'raw.githubusercontent.com',
+                        path: '/jahudka/rearrangefx/v' + availableVersion + '/CHANGELOG.md',
+                        agent: false
+                    };
 
+                    https.request(options, function (response) {
+                        if (response.statusCode === 200) {
+                            var changelog = [];
+
+                            response.on('data', function (data) {
+                                changelog.push(data);
+
+                            });
+
+                            response.on('end', function () {
+                                holder.find('#new-update-changes').text(changelog.join(''));
+                                holder.addClass('visible');
+
+                            });
+                        } else {
+                            holder.find('#new-update-changelog').remove();
+                            holder.addClass('visible');
+
+                        }
+                    }).end();
                 }
             }
         }
-    });
-
-    request.end();
+    }).end();
 
 })();
