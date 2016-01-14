@@ -18,6 +18,7 @@ var Rea = {
     dataPathCheck: null,
     createBackup: null,
     checkUpdates: null,
+
     save: function() {},
     toggleSave: function(enabled) {},
     revert: function() {},
@@ -27,8 +28,10 @@ var Rea = {
     toggleUndo: function(enabled) {},
     redo: function() {},
     toggleRedo: function(enabled) {},
+    sort: function() {},
     openPreferences: function() {},
     togglePlugins: function() { return true; },
+    pluginsToggled: function(state) {},
     checkChanges: function() { return true; },
     init: function() {},
     debug: _.includes(gui.App.argv, '--debug')

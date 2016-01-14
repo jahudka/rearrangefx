@@ -5,10 +5,16 @@ body, html {
     height: 100vh;
     margin: 0;
     padding: 0;
+    overflow: hidden;
     font: 14px/21px "Arial", sans-serif;
     color: #bababa;
     background: #2b2b2b;
     -webkit-user-select: none;
+}
+
+body {
+    display: flex;
+    flex-flow: column nowrap;
 }
 
 body.dragging, body.dragging * {
@@ -19,11 +25,51 @@ button:active, button:focus {
     outline: none;
 }
 
+#toolbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 0 5px;
+    background: #212121;
+    border-bottom: 1px solid #777;
+
+    .btn {
+        position: relative;
+        display: block;
+        margin: 5px;
+        -webkit-box-sizing: content-box;
+        box-sizing: content-box;
+        border: 1px solid #5a5a5a;
+        background: #212121;
+        color: #bababa;
+        font-size: 15px;
+        line-height: 15px;
+        cursor: pointer;
+
+        &:hover {
+            background: #2b2b2b;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        &.toolbar-right {
+            margin-left: auto;
+        }
+
+        .btn-stack-top {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.6em;
+        }
+    }
+}
+
 #main {
+    flex: 1 1 auto;
     display: flex;
     flex-flow: row nowrap;
     width: 100vw;
-    height: 100vh;
 }
 
 #folders-panel {
@@ -43,13 +89,11 @@ button:active, button:focus {
 .panel-main {
     display: flex;
     flex-flow: column nowrap;
-    height: 100vh;
 
     .panel-heading {
         flex: 0 0 auto;
         margin: 0;
         padding: 10px 5px;
-        background: #212121;
     }
 
     .panel-content {

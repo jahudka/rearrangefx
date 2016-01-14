@@ -12,6 +12,7 @@
 
     var $d = $(document),
         $b = $(document.body),
+        $toolbar = $('#toolbar'),
         $folders = $('#folders'),
         $plugins = $('#plugins'),
         $pluginsPanel = $('#plugins-panel'),
@@ -470,6 +471,33 @@
     }
 
 
+    function installToolbarHandler() {
+        $toolbar.on('click', 'button', function (evt) {
+            evt.preventDefault();
+
+            var $btn = $(this);
+
+            switch ($btn.data('action')) {
+                case 'new-folder':
+                    Rea.newFolder(!!$btn.data('smart'));
+                    break;
+
+                case 'sort':
+                    Rea.sort();
+                    break;
+
+                case 'toggle-plugins':
+                    Rea.togglePlugins();
+                    break;
+
+                case 'open-preferences':
+                    Rea.openPreferences();
+                    break;
+            }
+        });
+    }
+
+
 
     function serializeData() {
         var folders = [];
@@ -705,7 +733,7 @@
     }
 
 
-    function installHistoryHandlers() {
+    function installEditHandlers() {
         Rea.undo = function () {
             if (undo.length) {
                 redo.unshift(undo.pop());
@@ -750,13 +778,35 @@
             return false;
 
         };
+
+
+
+        Rea.sort = function () {
+            var items = [];
+
+            $folders.children().each(function () {
+                items.push({
+                    name: $(this).find('> .item-panel > .item-label').text().toLowerCase(),
+                    elm: this
+                });
+            });
+
+            items.sort(function (a, b) {
+                return a.name > b.name ? 1 : (a.name < b.name ? -1 : 0);
+            });
+
+            $folders.children().detach();
+            $folders.append(items.map(function(item) { return item.elm; }));
+            saveState();
+
+        };
     }
 
 
     function installViewHandlers() {
         Rea.togglePlugins = function () {
             $pluginsPanel.toggleClass('visible');
-            return $pluginsPanel.hasClass('visible');
+            Rea.pluginsToggled($pluginsPanel.hasClass('visible'));
 
         };
     }
@@ -783,7 +833,8 @@
             .then(installRemoveHandler)
             .then(installReorderHandler)
             .then(installInsertHandler)
-            .then(installHistoryHandlers)
+            .then(installToolbarHandler)
+            .then(installEditHandlers)
             .then(installFileHandlers)
             .then(installViewHandlers)
             .catch(function(err) {

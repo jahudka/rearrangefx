@@ -9,61 +9,6 @@
     // File menu
     var fileMenuItems = new gui.Menu();
 
-
-
-
-
-    var save = new gui.MenuItem({
-        type: 'normal',
-        label: 'Save changes',
-        key: 's',
-        modifiers: cmdKey,
-        enabled: false,
-        click: function () {
-            Rea.save();
-
-        }
-    });
-
-    Rea.toggleSave = function (enabled) {
-        save.enabled = enabled;
-
-    };
-
-    fileMenuItems.append(save);
-
-
-
-
-    var revert = new gui.MenuItem({
-        type: 'normal',
-        label: 'Revert changes',
-        key: 'r',
-        modifiers: cmdKey,
-        enabled: false,
-        click: function () {
-            Rea.revert();
-
-        }
-    });
-
-    Rea.toggleRevert = function (enabled) {
-        revert.enabled = enabled;
-
-    };
-
-    fileMenuItems.append(revert);
-
-
-
-
-
-    fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
-
-
-
-
-
     fileMenuItems.append(new gui.MenuItem({
         type: 'normal',
         label: 'New folder',
@@ -86,6 +31,48 @@
         }
     }));
 
+    fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
+
+    var save = new gui.MenuItem({
+        type: 'normal',
+        label: 'Save changes',
+        key: 's',
+        modifiers: cmdKey,
+        enabled: false,
+        click: function () {
+            Rea.save();
+
+        }
+    });
+
+    Rea.toggleSave = function (enabled) {
+        save.enabled = enabled;
+
+    };
+
+    fileMenuItems.append(save);
+
+
+    var revert = new gui.MenuItem({
+        type: 'normal',
+        label: 'Revert changes',
+        key: 'r',
+        modifiers: cmdKey,
+        enabled: false,
+        click: function () {
+            Rea.revert();
+
+        }
+    });
+
+    Rea.toggleRevert = function (enabled) {
+        revert.enabled = enabled;
+
+    };
+
+    fileMenuItems.append(revert);
+
+
     var fileMenu = new gui.MenuItem({
         label: 'File',
         submenu: fileMenuItems
@@ -100,17 +87,23 @@
 
     var viewMenuItems = new gui.Menu();
 
-    viewMenuItems.append(new gui.MenuItem({
+    var togglePlugins = new gui.MenuItem({
         type: 'checkbox',
         label: 'Show plugins',
         checked: true,
         key: 'g',
         modifiers: cmdKey,
         click: function () {
-            this.checked = Rea.togglePlugins();
+            Rea.togglePlugins();
 
         }
-    }));
+    });
+
+    Rea.pluginsToggled = function (state) {
+        togglePlugins.checked = state;
+    };
+
+    viewMenuItems.append(togglePlugins);
 
     var viewMenu = new gui.MenuItem({
         label: 'View',
@@ -172,6 +165,21 @@
 
     };
 
+
+    // sort alphabetically
+
+    var sort = new gui.MenuItem({
+        type: 'normal',
+        label: 'Sort folders alphabetically',
+        key: 'a',
+        modifiers: cmdKey,
+        click: function () {
+            Rea.sort();
+
+        }
+    });
+
+
     // main setup
 
     if (Rea.platform.osx) {
@@ -189,6 +197,8 @@
         mainMenu.items[2].submenu.removeAt(0);
         mainMenu.items[2].submenu.insert(undo, 0);
         mainMenu.items[2].submenu.insert(redo, 1);
+        mainMenu.items[2].submenu.insert(new gui.MenuItem({type: 'separator'}), 2);
+        mainMenu.items[2].submenu.insert(sort, 3);
 
         Rea.editMenuIndex = 2;
 
@@ -218,6 +228,10 @@
 
         editMenuItems.append(undo);
         editMenuItems.append(redo);
+
+        editMenuItems.append(new gui.MenuItem({type: 'separator'}));
+
+        editMenuItems.append(sort);
 
         editMenuItems.append(new gui.MenuItem({type: 'separator'}));
 

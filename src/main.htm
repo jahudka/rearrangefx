@@ -6,6 +6,25 @@
         <link rel="stylesheet" type="text/css" href="app://rearrangefx/styles/styles.css" />
     </head>
     <body>
+        <div id="toolbar">
+            <button type="button" class="btn" title="New folder" data-action="new-folder">
+                <i class="fa fa-folder-o"></i>
+                <i class="fa fa-asterisk btn-stack-top"></i>
+            </button>
+            <button type="button" class="btn" title="New Smart folder" data-action="new-folder" data-smart="true">
+                <i class="fa fa-folder"></i>
+                <i class="fa fa-asterisk btn-stack-top"></i>
+            </button>
+            <button type="button" class="btn" title="Sort folders alphabetically" data-action="sort">
+                <i class="fa fa-sort-alpha-asc"></i>
+            </button>
+            <button type="button" class="btn toolbar-right" title="Toggle plugin list" data-action="toggle-plugins">
+                <i class="fa fa-list"></i>
+            </button>
+            <button type="button" class="btn" title="Open preferences" data-action="open-preferences">
+                <i class="fa fa-cog"></i>
+            </button>
+        </div>
         <div id="main">
             <div id="folders-panel" class="panel-main">
                 <h3 class="panel-heading">FX Folders</h3>
