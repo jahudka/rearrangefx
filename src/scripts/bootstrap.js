@@ -30,7 +30,8 @@ var Rea = {
     openPreferences: function() {},
     togglePlugins: function() { return true; },
     checkChanges: function() { return true; },
-    init: function() {}
+    init: function() {},
+    debug: _.includes(gui.App.argv, '--debug')
 };
 
 gui.Window.get().focus();

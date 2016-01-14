@@ -787,12 +787,12 @@
             .then(installFileHandlers)
             .then(installViewHandlers)
             .catch(function(err) {
-                //console.error(err);
+                Rea.debug && console.error(err);
 
             })
         ;
 
-        gui.Window.get().showDevTools();
+        Rea.debug && gui.Window.get().showDevTools();
 
     };
 
