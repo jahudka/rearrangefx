@@ -10,6 +10,10 @@ _.each(['readFile', 'writeFile', 'stat', 'access'], function (method) {
 });
 
 var Rea = {
+    platform: {
+        osx: process.platform === 'darwin',
+        win: process.platform === 'win32' || process.platform === 'win64'
+    },
     dataPath: null,
     dataPathCheck: null,
     createBackup: null,

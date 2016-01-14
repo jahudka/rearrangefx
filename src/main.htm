@@ -35,6 +35,13 @@
                         </div>
                         <ul class="list list-sub"></ul>
                     </li>
+                    <li class="item item-main" id="plugins-vst3">
+                        <div class="item-panel">
+                            <span class="item-label">VST3</span>
+                            <button type="button" class="btn btn-toggle fa fa-caret-right"></button>
+                        </div>
+                        <ul class="list list-sub"></ul>
+                    </li>
                     <li class="item item-main" id="plugins-au">
                         <div class="item-panel">
                             <span class="item-label">AU</span>
@@ -114,6 +121,18 @@
                 <p class="text-center">
                     <button type="button" class="btn btn-main">Go to download</button>
                     <button type="button" class="btn btn-text">Done</button>
+                </p>
+            </div>
+        </div>
+
+        <div id="save-options-holder" class="dialog-holder">
+            <div id="save-options" class="dialog-content">
+                <p>You have made changes to your folder structure, but those changes haven't been saved. What would you like to do?</p>
+
+                <p class="flex-row">
+                    <button type="button" class="btn btn-main" style="margin-right:auto;">Discard &amp; <span class="action"></span></button>
+                    <button type="button" class="btn btn-main" data-save="true">Save &amp; <span class="action"></span></button>
+                    <button type="button" class="btn btn-text">Cancel</button>
                 </p>
             </div>
         </div>

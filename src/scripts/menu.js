@@ -2,8 +2,7 @@
 
     var mainMenu = new gui.Menu({type: 'menubar'});
 
-    var isMac = process.platform === 'darwin',
-        cmdKey = isMac ? 'cmd' : 'ctrl';
+    var cmdKey = Rea.platform.osx ? 'cmd' : 'ctrl';
 
 
 
@@ -126,7 +125,7 @@
     var preferences = new gui.MenuItem({
         type: 'normal',
         label: 'Preferences',
-        key: isMac ? ',' : 'p',
+        key: Rea.platform.osx ? ',' : 'p',
         modifiers: cmdKey,
         click: function () {
             Rea.openPreferences();
@@ -175,7 +174,7 @@
 
     // main setup
 
-    if (isMac) {
+    if (Rea.platform.osx) {
         mainMenu.createMacBuiltin('RearrangeFX', {
             hideWindow: true
         });

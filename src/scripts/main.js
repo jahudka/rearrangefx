@@ -19,14 +19,16 @@
             0: $('#plugins-dx'),
             2: $('#plugins-js'),
             3: $('#plugins-vst'),
+            vst3: $('#plugins-vst3'),
             4: $('#plugins-rewire'),
             5: $('#plugins-au'),
             6: $('#plugins-other'),
             1000: $('#plugins-chains')
         },
-        reVstPath = process.platform === 'win32'
-            ? /^.+?([^\\]+?)\.[^.<]+(<.+)?$/
-            : /^.+?([^/]+?)\.[^.<]+(<.+)?$/;
+        reVst3 = /\.vst3(?:<[a-z0-9]+)?$/i,
+        reVstPath = Rea.platform.win
+            ? /^.+?([^\\]+?)\.[^.<]+(<[a-z0-9]+)?$/i
+            : /^.+?([^\/]+?)\.[^.<]+(<[a-z0-9]+)?$/i;
 
     var pluginTypes = {
             0: 'DX',
@@ -44,12 +46,12 @@
         redo = [];
 
 
-    if (process.platform !== 'darwin') {
+    if (!Rea.platform.osx) {
         $pluginLists['5'].remove();
         delete $pluginLists['5'];
         delete pluginTypes['5'];
 
-    } else if (process.platform !== 'win32') {
+    } else if (!Rea.platform.win) {
         $pluginLists['0'].remove();
         delete $pluginLists['0'];
         delete pluginTypes['0'];
@@ -156,8 +158,13 @@
     function populatePlugins(config) {
         _.each(config.plugins, function (plugins, type) {
             _.each(plugins, function (id) {
-                addPlugin(type, id, $pluginLists[type]);
+                if (parseInt(type) === 3 && reVst3.test(id + '')) {
+                    addPlugin(type, id, $pluginLists.vst3);
 
+                } else {
+                    addPlugin(type, id, $pluginLists[type]);
+
+                }
             });
         });
 
@@ -290,17 +297,17 @@
 
     function installReorderHandler() {
         $folders.on('mousedown', function (evt) {
-            var t = $(evt.target);
+            var t = $(evt.target),
+                elm = t.closest('.item');
 
-            if (t.is('button') || t.prop('isContentEditable')) {
+            if (t.is('button') || t.prop('isContentEditable') || !elm.length) {
                 return;
 
             }
 
             evt.preventDefault();
 
-            var elm = t.closest('.item'),
-                scope = elm.closest('.list'),
+            var scope = elm.closest('.list'),
                 target = null,
                 dragged = false;
 
@@ -378,7 +385,7 @@
                 target = null,
                 tmr = null;
 
-            if (t.is('button, [contenteditable]') || elm.hasClass('item-main')) {
+            if (t.is('button') || !elm.length || elm.hasClass('item-main')) {
                 return;
 
             }
@@ -603,21 +610,21 @@
     function installFileHandlers() {
         Rea.save = function () {
             if (!dirty) {
-                return;
+                return Promise.resolve();
 
             }
 
             if (Rea.createBackup) {
-                backupFile().then(saveFile);
+                return backupFile().then(saveFile);
 
             } else {
-                saveFile();
+                return saveFile();
 
             }
         };
 
         Rea.revert = function () {
-            if (Rea.checkChanges()) {
+            Rea.checkChanges().then(function() {
                 $folders.empty();
 
                 populateFolders({
@@ -633,7 +640,7 @@
                 Rea.toggleUndo(false);
                 Rea.toggleRedo(false);
 
-            }
+            });
         };
 
         Rea.newFolder = function (smart) {
@@ -649,16 +656,51 @@
 
         };
 
-        Rea.checkChanges = function () {
-            return !dirty || window.confirm('Are you sure you want to continue? Any unsaved changes will be lost.');
+        Rea.checkChanges = function (action) {
+            action || (action = 'quit');
 
+            return new Promise(function (fulfill, reject) {
+                if (!dirty) {
+                    fulfill();
+                    return;
+
+                }
+
+                var $dlg = $('#save-options-holder');
+
+                $dlg.find('.action').text(action);
+
+                $dlg.one('click', 'button', function (evt) {
+                    evt.preventDefault();
+
+                    $dlg.removeClass('visible');
+
+                    var $btn = $(this);
+
+                    if ($btn.hasClass('btn-text')) {
+                        reject();
+
+                    } else {
+                        if ($btn.data('save')) {
+                            Rea.save().then(fulfill, reject);
+
+                        } else {
+                            fulfill();
+
+                        }
+                    }
+                });
+
+                $dlg.addClass('visible');
+
+            });
         };
 
         gui.Window.get().on('close', function () {
-            if (Rea.checkChanges()) {
+            Rea.checkChanges().then(function() {
                 this.close(true);
 
-            }
+            }.bind(this));
         });
     }
 
@@ -750,7 +792,7 @@
             })
         ;
 
-        //gui.Window.get().showDevTools();
+        gui.Window.get().showDevTools();
 
     };
 

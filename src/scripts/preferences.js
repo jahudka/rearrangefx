@@ -5,7 +5,7 @@
     Rea.checkUpdates = window.localStorage.getItem('checkUpdates');
 
     if (!Rea.dataPath) {
-        if (process.platform === 'win32') {
+        if (Rea.platform.win) {
             Rea.dataPath = path.join(path.dirname(path.dirname(gui.App.dataPath)), 'Roaming', 'REAPER');
 
         } else {
@@ -111,14 +111,15 @@
             window.localStorage.setItem('createBackup', Rea.createBackup ? '1' : '');
             window.localStorage.setItem('checkUpdates', Rea.checkUpdates + '');
 
-            if ($dataPathField.val() !== Rea.dataPath) {
-                Rea.dataPath = $dataPathField.val();
-                window.localStorage.setItem('reaperDataPath', Rea.dataPath);
+            var dataPath = $dataPathField.val();
 
-                if (Rea.checkChanges()) {
+            if (dataPath !== Rea.dataPath) {
+                Rea.checkChanges('continue').then(function() {
+                    Rea.dataPath = dataPath;
+                    window.localStorage.setItem('reaperDataPath', dataPath);
                     Rea.init();
 
-                }
+                });
             }
         }
 

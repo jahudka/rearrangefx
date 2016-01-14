@@ -187,6 +187,7 @@ button:focus {
 .dialog-content {
   flex: 0 0 auto;
   width: 80vw;
+  max-width: 400px;
   max-height: 100vh;
   margin: 0 auto;
   padding: 20px;
@@ -216,6 +217,10 @@ button:focus {
 }
 .dialog-content .text-center {
   text-align: center;
+}
+.dialog-content .flex-row {
+  display: flex;
+  flex-flow: row nowrap;
 }
 .dialog-content .btn {
   padding: 2px 5px;

@@ -1,3 +1,8 @@
+### v0.0.9
+ - fixed stripping VST plugin path and extension on Windows, *again*
+ - a new dialog for unsaved changes on exit now allows saving & quitting
+ - experimentally sorting VST3 plugins into their own folder in the Plugins panel based on file extension
+
 ### v0.0.8
  - fixed stripping VST plugin path and extension on Windows
  - removed max window width constraint
