@@ -1,3 +1,8 @@
+### v0.0.10
+ - added alphabetic sorting
+ - added toolbar
+ - disabled elastic scrolling on body
+
 ### v0.0.9
  - fixed stripping VST plugin path and extension on Windows, *again*
  - a new dialog for unsaved changes on exit now allows saving & quitting
