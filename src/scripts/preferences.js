@@ -1,33 +1,33 @@
 (function () {
 
-    Rea.dataPath = window.localStorage.getItem('reaperDataPath');
-    Rea.createBackup = window.localStorage.getItem('createBackup');
-    Rea.checkUpdates = window.localStorage.getItem('checkUpdates');
+    Rea.config.dataPath = window.localStorage.getItem('reaperDataPath');
+    Rea.config.createBackup = window.localStorage.getItem('createBackup');
+    Rea.config.checkUpdates = window.localStorage.getItem('checkUpdates');
 
-    if (!Rea.dataPath) {
+    if (!Rea.config.dataPath) {
         if (Rea.platform.win) {
-            Rea.dataPath = path.join(path.dirname(path.dirname(gui.App.dataPath)), 'Roaming', 'REAPER');
+            Rea.config.dataPath = path.join(path.dirname(path.dirname(gui.App.dataPath)), 'Roaming', 'REAPER');
 
         } else {
-            Rea.dataPath = path.join(path.dirname(gui.App.dataPath), 'REAPER');
+            Rea.config.dataPath = path.join(path.dirname(gui.App.dataPath), 'REAPER');
 
         }
     }
 
-    if (Rea.createBackup === null) {
-        Rea.createBackup = '1';
+    if (Rea.config.createBackup === null) {
+        Rea.config.createBackup = '1';
         window.localStorage.setItem('createBackup', '1');
 
     }
 
-    if (Rea.checkUpdates === null) {
-        Rea.checkUpdates = '0';
+    if (Rea.config.checkUpdates === null) {
+        Rea.config.checkUpdates = '0';
         window.localStorage.setItem('checkUpdates', '0');
 
     }
 
-    Rea.createBackup = !!Rea.createBackup;
-    Rea.checkUpdates = parseInt(Rea.checkUpdates);
+    Rea.config.createBackup = !!Rea.config.createBackup;
+    Rea.config.checkUpdates = parseInt(Rea.config.checkUpdates);
 
     var $preferences = $('#preferences-holder'),
         $dataPathField = $('#preferences-dataPath'),
@@ -37,23 +37,19 @@
         $checkUpdates = $('#preferences-checkUpdates');
 
 
-    Rea.openPreferences = function () {
-        if (!$preferences.hasClass('visible')) {
-            $dataPathField.val(Rea.dataPath);
-            $dataPathPicker.attr('nwworkingdir', Rea.dataPath);
-            $createBackup.prop('checked', Rea.createBackup);
-            $checkUpdates.prop('checked', Rea.checkUpdates < Number.MAX_VALUE);
-            $preferences.addClass('visible');
+    $preferences.on('dialog-open', function () {
+        $dataPathField.val(Rea.config.dataPath);
+        $dataPathPicker.attr('nwworkingdir', Rea.config.dataPath);
+        $createBackup.prop('checked', Rea.config.createBackup);
+        $checkUpdates.prop('checked', Rea.config.checkUpdates < Number.MAX_VALUE);
 
-        }
-    };
-
+    });
 
     Rea.dataPathCheck = new Promise(function (fulfill, reject) {
-        fs.stat(Rea.dataPath)
+        fs.stat(Rea.config.dataPath)
             .then(function (stat) {
                 if (!stat.isDirectory()) {
-                    $preferences.addClass('visible');
+                    Rea.api.openDialog('preferences');
                     $dataPathError.css('display', '');
                     reject();
 
@@ -62,7 +58,7 @@
 
                 }
             }, function () {
-                $preferences.addClass('visible');
+                Rea.api.openDialog('preferences');
                 $dataPathError.css('display', '');
                 reject();
 
@@ -106,18 +102,18 @@
         var btn = $(this);
 
         if (btn.hasClass('btn-main')) {
-            Rea.createBackup = $createBackup.prop('checked');
-            Rea.checkUpdates = $checkUpdates.prop('checked') ? 0 : Number.MAX_VALUE;
-            window.localStorage.setItem('createBackup', Rea.createBackup ? '1' : '');
-            window.localStorage.setItem('checkUpdates', Rea.checkUpdates + '');
+            Rea.config.createBackup = $createBackup.prop('checked');
+            Rea.config.checkUpdates = $checkUpdates.prop('checked') ? 0 : Number.MAX_VALUE;
+            window.localStorage.setItem('createBackup', Rea.config.createBackup ? '1' : '');
+            window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
 
             var dataPath = $dataPathField.val();
 
-            if (dataPath !== Rea.dataPath) {
-                Rea.checkChanges('continue').then(function() {
-                    Rea.dataPath = dataPath;
+            if (dataPath !== Rea.config.dataPath) {
+                Rea.api.checkChanges('continue').then(function() {
+                    Rea.config.dataPath = dataPath;
                     window.localStorage.setItem('reaperDataPath', dataPath);
-                    Rea.init();
+                    Rea.api.init();
 
                 });
             }

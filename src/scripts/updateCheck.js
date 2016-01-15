@@ -1,30 +1,11 @@
 (function () {
 
-    if (Rea.checkUpdates > Date.now()) {
+    if (Rea.config.checkUpdates > Date.now()) {
         return;
 
     }
 
     var https = require('https');
-
-    var holder = $('#new-update-holder');
-
-    holder.on('click', '.btn-main', function (evt) {
-        evt.preventDefault();
-
-        gui.Shell.openExternal('https://jahudka.github.io/rearrangefx');
-        holder.removeClass('visible');
-
-    });
-
-    holder.on('click', '.btn-text', function (evt) {
-        evt.preventDefault();
-        holder.removeClass('visible');
-
-    });
-
-    // https://raw.githubusercontent.com/jahudka/rearrangefx/master/CHANGELOG.md
-    // https://raw.githubusercontent.com/jahudka/rearrangefx/v0.0.7/README.md
 
     var options = {
         method: 'GET',
@@ -35,8 +16,8 @@
     };
 
     https.request(options, function (response) {
-        Rea.checkUpdates = Date.now() + 43200;
-        window.localStorage.setItem('checkUpdates', Rea.checkUpdates + '');
+        Rea.config.checkUpdates = Date.now() + 43200;
+        window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
 
         if (response.statusCode === 302 && response.headers.hasOwnProperty('location')) {
             var url = (response.headers.location + '').match(/^https?:\/\/github.com\/jahudka\/rearrangefx\/releases\/tag\/v?(\d+\.\d+\.\d+)$/),
@@ -57,6 +38,13 @@
                     };
 
                     https.request(options, function (response) {
+                        var holder = Rea.api.openDialog('new-update');
+
+                        holder.on('click', '.btn-main', function () {
+                            gui.Shell.openExternal('https://jahudka.github.io/rearrangefx');
+
+                        });
+
                         if (response.statusCode === 200) {
                             var changelog = [];
 
@@ -67,12 +55,10 @@
 
                             response.on('end', function () {
                                 holder.find('#new-update-changes').text(changelog.join(''));
-                                holder.addClass('visible');
 
                             });
                         } else {
                             holder.find('#new-update-changelog').remove();
-                            holder.addClass('visible');
 
                         }
                     }).end();

@@ -1,77 +1,67 @@
 (function () {
 
-    var mainMenu = new gui.Menu({type: 'menubar'});
+    var mainMenu = new gui.Menu({type: 'menubar'}),
+        cmdKey = Rea.platform.osx ? 'cmd' : 'ctrl';
 
-    var cmdKey = Rea.platform.osx ? 'cmd' : 'ctrl';
+    function separate(list) {
+        list.append(new gui.MenuItem({type: 'separator'}));
 
+    }
 
-
-    // File menu
-    var fileMenuItems = new gui.Menu();
-
-    fileMenuItems.append(new gui.MenuItem({
+    Rea.menu.newFolder = new gui.MenuItem({
         type: 'normal',
         label: 'New folder',
         key: 'n',
         modifiers: cmdKey,
         click: function () {
-            Rea.newFolder(false);
+            Rea.api.newFolder(false);
 
         }
-    }));
+    });
 
-    fileMenuItems.append(new gui.MenuItem({
+    Rea.menu.newSmartFolder = new gui.MenuItem({
         type: 'normal',
         label: 'New Smart folder',
         key: 'N',
         modifiers: cmdKey,
         click: function () {
-            Rea.newFolder(true);
+            Rea.api.newFolder(true);
 
         }
-    }));
+    });
 
-    fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
-
-    var save = new gui.MenuItem({
+    Rea.menu.save = new gui.MenuItem({
         type: 'normal',
         label: 'Save changes',
         key: 's',
         modifiers: cmdKey,
         enabled: false,
         click: function () {
-            Rea.save();
+            Rea.api.save();
 
         }
     });
 
-    Rea.toggleSave = function (enabled) {
-        save.enabled = enabled;
-
-    };
-
-    fileMenuItems.append(save);
-
-
-    var revert = new gui.MenuItem({
+    Rea.menu.revert = new gui.MenuItem({
         type: 'normal',
         label: 'Revert changes',
         key: 'r',
         modifiers: cmdKey,
         enabled: false,
         click: function () {
-            Rea.revert();
+            Rea.api.revert();
 
         }
     });
 
-    Rea.toggleRevert = function (enabled) {
-        revert.enabled = enabled;
+    // File menu
+    var fileMenuItems = new gui.Menu();
 
-    };
-
-    fileMenuItems.append(revert);
-
+    fileMenuItems.append(Rea.menu.newFolder);
+    fileMenuItems.append(Rea.menu.newSmartFolder);
+    separate(fileMenuItems);
+    fileMenuItems.append(Rea.menu.save);
+    fileMenuItems.append(Rea.menu.revert);
 
     var fileMenu = new gui.MenuItem({
         label: 'File',
@@ -87,23 +77,19 @@
 
     var viewMenuItems = new gui.Menu();
 
-    var togglePlugins = new gui.MenuItem({
+    Rea.menu.togglePlugins = new gui.MenuItem({
         type: 'checkbox',
         label: 'Show plugins',
         checked: true,
         key: 'g',
         modifiers: cmdKey,
         click: function () {
-            Rea.togglePlugins();
+            Rea.api.togglePlugins();
 
         }
     });
 
-    Rea.pluginsToggled = function (state) {
-        togglePlugins.checked = state;
-    };
-
-    viewMenuItems.append(togglePlugins);
+    viewMenuItems.append(Rea.menu.togglePlugins);
 
     var viewMenu = new gui.MenuItem({
         label: 'View',
@@ -115,66 +101,53 @@
 
     // Preferences
 
-    var preferences = new gui.MenuItem({
+    Rea.menu.preferences = new gui.MenuItem({
         type: 'normal',
         label: 'Preferences',
         key: Rea.platform.osx ? ',' : 'p',
         modifiers: cmdKey,
         click: function () {
-            Rea.openPreferences();
+            Rea.api.openDialog('preferences');
 
         }
     });
 
 
-
-
     // Undo, Redo
 
-    var undo = new gui.MenuItem({
+    Rea.menu.undo = new gui.MenuItem({
         type: 'normal',
         label: 'Undo',
         key: 'z',
         modifiers: cmdKey,
         enabled: false,
         click: function () {
-            this.enabled = Rea.undo();
+            Rea.api.undo();
 
         }
     });
 
-    Rea.toggleUndo = function(enabled) {
-        undo.enabled = enabled;
-
-    };
-
-    var redo = new gui.MenuItem({
+    Rea.menu.redo = new gui.MenuItem({
         type: 'normal',
         label: 'Redo',
         key: 'y',
         modifiers: cmdKey,
         enabled: false,
         click: function () {
-            this.enabled = Rea.redo();
+            Rea.api.redo();
 
         }
     });
 
-    Rea.toggleRedo = function (enabled) {
-        redo.enabled = enabled;
-
-    };
-
-
     // sort alphabetically
 
-    var sort = new gui.MenuItem({
+    Rea.menu.sort = new gui.MenuItem({
         type: 'normal',
         label: 'Sort folders alphabetically',
         key: 'a',
         modifiers: cmdKey,
         click: function () {
-            Rea.sort();
+            Rea.api.sort();
 
         }
     });
@@ -187,24 +160,22 @@
             hideWindow: true
         });
 
-        mainMenu.items[0].submenu.insert(preferences, 2);
+        mainMenu.items[0].submenu.insert(Rea.menu.preferences, 2);
         mainMenu.items[0].submenu.insert(new gui.MenuItem({type: 'separator'}), 3);
         mainMenu.insert(fileMenu, 1);
 
 
-        redo.key = 'Z';
+        Rea.menu.redo.key = 'Z';
         mainMenu.items[2].submenu.removeAt(0);
         mainMenu.items[2].submenu.removeAt(0);
-        mainMenu.items[2].submenu.insert(undo, 0);
-        mainMenu.items[2].submenu.insert(redo, 1);
+        mainMenu.items[2].submenu.insert(Rea.menu.undo, 0);
+        mainMenu.items[2].submenu.insert(Rea.menu.redo, 1);
         mainMenu.items[2].submenu.insert(new gui.MenuItem({type: 'separator'}), 2);
-        mainMenu.items[2].submenu.insert(sort, 3);
-
-        Rea.editMenuIndex = 2;
+        mainMenu.items[2].submenu.insert(Rea.menu.sort, 3);
 
     } else {
         fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
-        fileMenuItems.append(preferences);
+        fileMenuItems.append(Rea.menu.preferences);
         fileMenuItems.append(new gui.MenuItem({type: 'separator'}));
 
         fileMenuItems.append(new gui.MenuItem({
@@ -226,14 +197,11 @@
 
         var editMenuItems = new gui.Menu();
 
-        editMenuItems.append(undo);
-        editMenuItems.append(redo);
-
-        editMenuItems.append(new gui.MenuItem({type: 'separator'}));
-
-        editMenuItems.append(sort);
-
-        editMenuItems.append(new gui.MenuItem({type: 'separator'}));
+        editMenuItems.append(Rea.menu.undo);
+        editMenuItems.append(Rea.menu.redo);
+        separate(editMenuItems);
+        editMenuItems.append(Rea.menu.sort);
+        separate(editMenuItems);
 
         editMenuItems.append(new gui.MenuItem({
             type: 'normal',
@@ -272,8 +240,6 @@
             label: 'Edit',
             submenu: editMenuItems
         }));
-
-        Rea.editMenuIndex = 1;
 
     }
 

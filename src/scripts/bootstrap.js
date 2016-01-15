@@ -9,32 +9,71 @@ _.each(['readFile', 'writeFile', 'stat', 'access'], function (method) {
 
 });
 
-var Rea = {
-    platform: {
-        osx: process.platform === 'darwin',
-        win: process.platform === 'win32' || process.platform === 'win64'
-    },
-    dataPath: null,
-    dataPathCheck: null,
-    createBackup: null,
-    checkUpdates: null,
 
-    save: function() {},
-    toggleSave: function(enabled) {},
-    revert: function() {},
-    toggleRevert: function(enabled) {},
-    newFolder: function(smart) {},
-    undo: function() {},
-    toggleUndo: function(enabled) {},
-    redo: function() {},
-    toggleRedo: function(enabled) {},
-    sort: function() {},
-    openPreferences: function() {},
-    togglePlugins: function() { return true; },
-    pluginsToggled: function(state) {},
-    checkChanges: function() { return true; },
-    init: function() {},
-    debug: _.includes(gui.App.argv, '--debug')
-};
+var Rea = (function () {
+    var noop = function() {};
+
+    return {
+        platform: {
+            osx: process.platform === 'darwin',
+            win: process.platform === 'win32' || process.platform === 'win64'
+        },
+
+        config: {
+            dataPath: null,
+            createBackup: null,
+            checkUpdates: null
+        },
+
+        dataPathCheck: null,
+
+        state: {
+            original: null,
+            dirty: false,
+            undo: [],
+            redo: []
+        },
+
+        lib: {
+            config: {},
+            dom: {},
+            file: {},
+            state: {},
+            pluginTypes: {
+                0: 'DX',
+                2: 'JS',
+                3: 'VST',
+                4: 'ReWire',
+                5: 'AU',
+                6: 'Others',
+                1000: 'FX Chain'
+            }
+        },
+
+        api: {
+            save: noop,
+            revert: noop,
+            newFolder: noop,
+            undo: noop,
+            redo: noop,
+            sort: noop,
+            openDialog: noop,
+            togglePlugins: noop,
+            checkChanges: noop,
+            init: noop
+        },
+
+        menu: {
+            save: null,
+            revert: null,
+            undo: null,
+            redo: null,
+            togglePlugins: null
+        },
+
+        debug: _.includes(gui.App.argv, '--debug')
+
+    };
+})();
 
 gui.Window.get().focus();

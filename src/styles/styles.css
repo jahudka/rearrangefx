@@ -272,6 +272,12 @@ button:focus {
 .dialog-content .btn:hover {
   color: #fff;
 }
+.dialog-content .btn.confirm {
+  background: #212121;
+}
+.dialog-content .btn.focus {
+  outline: 1px solid #333;
+}
 .dialog-content .btn-main {
   border: 1px solid #777;
 }
