@@ -169,6 +169,11 @@
             });
         });
 
+        _.each($pluginLists, function ($list) {
+            sortList($list.children('.list'));
+
+        });
+
         $plugins.find('.btn-remove').remove();
 
         return config;
@@ -221,6 +226,27 @@
             before.before($elm);
 
         }
+    }
+
+
+
+    function sortList($container) {
+        var items = [];
+
+        $container.children().each(function () {
+            items.push({
+                name: $(this).find('> .item-panel > .item-label').text().toLowerCase(),
+                elm: this
+            });
+        });
+
+        items.sort(function (a, b) {
+            return a.name > b.name ? 1 : (a.name < b.name ? -1 : 0);
+        });
+
+        $container.children().detach();
+        $container.append(items.map(function(item) { return item.elm; }));
+
     }
 
 
@@ -782,21 +808,7 @@
 
 
         Rea.sort = function () {
-            var items = [];
-
-            $folders.children().each(function () {
-                items.push({
-                    name: $(this).find('> .item-panel > .item-label').text().toLowerCase(),
-                    elm: this
-                });
-            });
-
-            items.sort(function (a, b) {
-                return a.name > b.name ? 1 : (a.name < b.name ? -1 : 0);
-            });
-
-            $folders.children().detach();
-            $folders.append(items.map(function(item) { return item.elm; }));
+            sortList($folders);
             saveState();
 
         };
