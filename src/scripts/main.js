@@ -3,6 +3,7 @@
     Rea.api.init = function () {
         Rea.lib.dom.cleanup();
         Rea.lib.state.cleanup();
+        Rea.lib.keyboard.setEnabled(true);
 
         Rea.dataPathCheck
             .then(Rea.lib.config.load)
@@ -22,8 +23,6 @@
             })
         ;
 
-        Rea.debug && gui.Window.get().showDevTools();
-
     };
 
     gui.Window.get().on('close', function () {
@@ -33,6 +32,10 @@
         }.bind(this));
     });
 
+    Rea.debug && gui.Window.get().showDevTools();
+
     Rea.api.init();
+
+    gui.Window.get().focus();
 
 })();

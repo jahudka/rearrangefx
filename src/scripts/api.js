@@ -9,6 +9,8 @@
 
         }
 
+        Rea.lib.keyboard.setCursor(folder);
+
         folder.find('.btn-edit').first().trigger('click');
 
     };
@@ -99,6 +101,7 @@
         dlg.trigger('dialog-open');
 
         dlg.addClass('visible');
+        Rea.lib.keyboard.setEnabled(false);
 
         var $d = $(document);
         dlg.find('button.focus').first().trigger('focus');
@@ -106,6 +109,7 @@
         function close() {
             dlg.removeClass('visible');
             $d.off('.dlg');
+            Rea.lib.keyboard.setEnabled(true);
 
         }
 

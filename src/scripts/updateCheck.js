@@ -16,7 +16,7 @@
     };
 
     https.request(options, function (response) {
-        Rea.config.checkUpdates = Date.now() + 43200;
+        Rea.config.checkUpdates = Date.now() + 43200000;
         window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
 
         if (response.statusCode === 302 && response.headers.hasOwnProperty('location')) {

@@ -96,31 +96,24 @@
 
     });
 
-    $preferences.on('click', 'button', function (evt) {
-        evt.preventDefault();
+    $preferences.on('click', 'button.confirm', function () {
+        console.log('saving');
 
-        var btn = $(this);
+        Rea.config.createBackup = $createBackup.prop('checked');
+        Rea.config.checkUpdates = $checkUpdates.prop('checked') ? 0 : Number.MAX_VALUE;
+        window.localStorage.setItem('createBackup', Rea.config.createBackup ? '1' : '');
+        window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
 
-        if (btn.hasClass('btn-main')) {
-            Rea.config.createBackup = $createBackup.prop('checked');
-            Rea.config.checkUpdates = $checkUpdates.prop('checked') ? 0 : Number.MAX_VALUE;
-            window.localStorage.setItem('createBackup', Rea.config.createBackup ? '1' : '');
-            window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
+        var dataPath = $dataPathField.val();
 
-            var dataPath = $dataPathField.val();
+        if (dataPath !== Rea.config.dataPath) {
+            Rea.api.checkChanges('continue').then(function() {
+                Rea.config.dataPath = dataPath;
+                window.localStorage.setItem('reaperDataPath', dataPath);
+                Rea.api.init();
 
-            if (dataPath !== Rea.config.dataPath) {
-                Rea.api.checkChanges('continue').then(function() {
-                    Rea.config.dataPath = dataPath;
-                    window.localStorage.setItem('reaperDataPath', dataPath);
-                    Rea.api.init();
-
-                });
-            }
+            });
         }
-
-        $preferences.removeClass('visible');
-
     });
 
 })();

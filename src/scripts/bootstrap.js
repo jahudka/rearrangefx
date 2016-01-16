@@ -39,6 +39,7 @@ var Rea = (function () {
             dom: {},
             file: {},
             state: {},
+            keyboard: {},
             pluginTypes: {
                 0: 'DX',
                 2: 'JS',
@@ -75,5 +76,3 @@ var Rea = (function () {
 
     };
 })();
-
-gui.Window.get().focus();

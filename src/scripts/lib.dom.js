@@ -268,8 +268,13 @@
             label.one('blur', function () {
                 label.off('keydown keyup', handleKey);
                 label.prop('contenteditable', false);
+                Rea.lib.keyboard.setEnabled(true);
 
             });
+
+            Rea.lib.keyboard.setCursor(item);
+            Rea.lib.keyboard.setEnabled(false);
+
 
             label.prop('contenteditable', true).trigger('focus');
 
@@ -355,6 +360,7 @@
                 $.dimmer.hide();
                 scope.off('mouseenter', '> .item', handleEnter);
                 scope.off('mouseleave', '> .item', handleLeave);
+                Rea.lib.keyboard.setCursor(elm);
 
                 if (target) {
                     if (target.hasClass('drag-target-prev')) {
@@ -450,6 +456,7 @@
                 $.dimmer.hide();
                 $folders.off('mouseenter', '.item', handleEnter);
                 $folders.off('mouseleave', '.item', handleLeave);
+                Rea.lib.keyboard.setCursor(elm);
 
                 if (target) {
                     if (target.hasClass('item-main')) {
