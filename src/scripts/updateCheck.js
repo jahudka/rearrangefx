@@ -1,6 +1,6 @@
 (function () {
 
-    if (Rea.config.checkUpdates > Date.now()) {
+    if (Rea.config.checkUpdates === false || Rea.config.checkUpdates > Date.now()) {
         return;
 
     }
@@ -17,7 +17,7 @@
 
     https.request(options, function (response) {
         Rea.config.checkUpdates = Date.now() + 43200000;
-        window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
+        window.localStorage.setItem('checkUpdates', JSON.stringify(Rea.config.checkUpdates));
 
         if (response.statusCode === 302 && response.headers.hasOwnProperty('location')) {
             var url = (response.headers.location + '').match(/^https?:\/\/github.com\/jahudka\/rearrangefx\/releases\/tag\/v?(\d+\.\d+\.\d+)$/),

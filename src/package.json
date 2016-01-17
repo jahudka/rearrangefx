@@ -21,7 +21,7 @@
     "icon": "icons/icon.png",
     "toolbar": false,
     "frame": true,
-    "width": 600,
+    "width": 700,
     "height": 700,
     "position": "center",
     "min_width": 400,

@@ -1,8 +1,8 @@
 (function () {
 
     Rea.config.dataPath = window.localStorage.getItem('reaperDataPath');
-    Rea.config.createBackup = window.localStorage.getItem('createBackup');
-    Rea.config.checkUpdates = window.localStorage.getItem('checkUpdates');
+    Rea.config.createBackup = JSON.parse(window.localStorage.getItem('createBackup') || 'true');
+    Rea.config.checkUpdates = JSON.parse(window.localStorage.getItem('checkUpdates') || 'true');
 
     if (!Rea.config.dataPath) {
         if (Rea.platform.win) {
@@ -14,20 +14,6 @@
         }
     }
 
-    if (Rea.config.createBackup === null) {
-        Rea.config.createBackup = '1';
-        window.localStorage.setItem('createBackup', '1');
-
-    }
-
-    if (Rea.config.checkUpdates === null) {
-        Rea.config.checkUpdates = '0';
-        window.localStorage.setItem('checkUpdates', '0');
-
-    }
-
-    Rea.config.createBackup = !!Rea.config.createBackup;
-    Rea.config.checkUpdates = parseInt(Rea.config.checkUpdates);
 
     var $preferences = $('#preferences-holder'),
         $dataPathField = $('#preferences-dataPath'),
@@ -41,7 +27,7 @@
         $dataPathField.val(Rea.config.dataPath);
         $dataPathPicker.attr('nwworkingdir', Rea.config.dataPath);
         $createBackup.prop('checked', Rea.config.createBackup);
-        $checkUpdates.prop('checked', Rea.config.checkUpdates < Number.MAX_VALUE);
+        $checkUpdates.prop('checked', Rea.config.checkUpdates !== false);
 
     });
 
@@ -97,12 +83,10 @@
     });
 
     $preferences.on('click', 'button.confirm', function () {
-        console.log('saving');
-
         Rea.config.createBackup = $createBackup.prop('checked');
-        Rea.config.checkUpdates = $checkUpdates.prop('checked') ? 0 : Number.MAX_VALUE;
-        window.localStorage.setItem('createBackup', Rea.config.createBackup ? '1' : '');
-        window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates + '');
+        Rea.config.checkUpdates = $checkUpdates.prop('checked');
+        window.localStorage.setItem('createBackup', Rea.config.createBackup ? 'true' : 'false');
+        window.localStorage.setItem('checkUpdates', Rea.config.checkUpdates ? 'true' : 'false');
 
         var dataPath = $dataPathField.val();
 
