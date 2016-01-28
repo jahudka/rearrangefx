@@ -2,7 +2,9 @@
 
     lib.load = function load() {
         return fs.readFile(path.join(Rea.config.dataPath, 'reaper-fxfolders.ini'))
-            .then(ini.parse, function () {
+            .then(ini.parse, function (err) {
+                Rea.debug && console.log(err);
+
                 return {
                     Folders: {
                         NbFolders: 0
