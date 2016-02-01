@@ -15,6 +15,33 @@
         agent: false
     };
 
+    function compareVersion(a, b) {
+        a = (a + '').split(/[-.]/g);
+        b = (b + '').split(/[-.]/g);
+
+        var i, n = Math.max(a.length, b.length),
+            reNum = /^\d+$/;
+
+        for (i = 0; i < n; i++) {
+            if (typeof a[i] === 'undefined' || typeof b[i] === 'undefined') {
+                return typeof a[i] === 'undefined' ? -1 : 1;
+
+            } else if (reNum.test(a[i]) && reNum.test(b[i])) {
+                a[i] = parseInt(a[i]);
+                b[i] = parseInt(b[i]);
+
+            }
+
+            if (a[i] !== b[i]) {
+                return a[i] > b[i] ? 1 : (a[i] < b[i] ? -1 : 0);
+
+            }
+        }
+
+        return 0;
+
+    }
+
     https.request(options, function (response) {
         Rea.config.checkUpdates = Date.now() + 43200000;
         window.localStorage.setItem('checkUpdates', JSON.stringify(Rea.config.checkUpdates));
@@ -28,7 +55,7 @@
                 availableVersion = url[1];
                 packageJson = require('./package.json');
 
-                if (availableVersion !== packageJson.version) {
+                if (compareVersion(availableVersion, packageJson.version) > 0) {
                     var options = {
                         method: 'GET',
                         protocol: 'https:',

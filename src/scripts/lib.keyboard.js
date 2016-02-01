@@ -32,19 +32,8 @@
         if (elm && elm.length) {
             lastCursor[activePanel] = cursor = elm;
             cursor.addClass('cursor');
+            cursor.get(0).scrollIntoViewIfNeeded();
 
-            var ph = panels[activePanel].outerHeight(),
-                ps = panels[activePanel].scrollTop(),
-                ct = cursor.position().top,
-                ch = cursor.outerHeight();
-
-            if (ct < 0) {
-                panels[activePanel].scrollTop(ps + ct);
-
-            } else if (ct + ch > ph) {
-                panels[activePanel].scrollTop(ct + ch - ph + ps);
-
-            }
         }
     }
 
@@ -65,7 +54,7 @@
                     elm = cursor.parent().children().last();
                     elm2 = elm.find('> .list > .item:last');
 
-                    setCursor(elm2.length ? elm2 : elm);
+                    setCursor(elm.hasClass('open') && elm2.length ? elm2 : elm);
 
                 } else {
                     setCursor(cursor.closest('.item-main'));
@@ -277,6 +266,12 @@
                 break;
 
             case 37: // arrow left
+                if (activePanel !== 'folders') {
+                    switchPanel();
+
+                }
+                break;
+
             case 38: // arrow up
                 if (evt.shiftKey && activePanel === 'folders') {
                     moveSelectionUp();
@@ -287,8 +282,14 @@
                 }
                 break;
 
-            case 39: // arrow down
-            case 40: // arrow right
+            case 39: // arrow right
+                if (activePanel !== 'plugins') {
+                    switchPanel();
+
+                }
+                break;
+
+            case 40: // arrow down
                 if (evt.shiftKey && activePanel === 'folders') {
                     moveSelectionDown();
 
