@@ -10,11 +10,16 @@
                 .on('mouseenter.gw', 'td', this._updateRulers)
                 .on('mouseleave.gw', this._hideRulers);
 
+            this._scrollFrame = null;
         },
 
         componentWillUnmount: function () {
             $([this._viewport, this._folders, this._plugins])
                 .off('.gw');
+
+            if (this._scrollFrame !== null) {
+                window.cancelAnimationFrame(this._scrollFrame);
+            }
         },
 
         render: function () {
@@ -107,8 +112,9 @@
 
             this._lock = true;
 
-            window.requestAnimationFrame(function() {
+            this._scrollFrame = window.requestAnimationFrame(function() {
                 this._lock = false;
+                this._scrollFrame = null;
 
                 var x, y;
 
@@ -142,7 +148,11 @@
                 state = !t.hasClass('checked'),
                 $d = $(document),
                 $g = $(this._grid),
-                last = t,
+                last = {
+                    items: t,
+                    folders: [this.props.db.getFolder(t.attr('data-folder') - 0)],
+                    plugins: [this.props.db.getPlugin(t.attr('data-plugin') - 0)]
+                },
                 vw = v.right - v.left,
                 vh = v.bottom - v.top,
                 scr_horiz_tp = v.left + vw * 0.1,
@@ -153,7 +163,8 @@
                 scr_vert_d = 0,
                 scr_frame = null,
                 scrolling = false,
-                last_mmevt = null;
+                last_mmevt = null,
+                ended = false;
 
             t.toggleClass('checked', state);
             t.addClass('toggling');
@@ -161,21 +172,17 @@
             var end = function(evt) {
                 evt.preventDefault();
 
+                ended = true;
+
                 $d.off('.gw');
 
                 if (last) {
-                    last.removeClass('toggling');
+                    last.items.removeClass('toggling');
 
-                    if (last.parent().length === 1) {
-                        this.props.db.getPlugin(last.data('plugin') - 0)
-                            .toggleFolders(last.toArray().map(function(elem) {
-                                return this.props.db.getFolder(elem.getAttribute('data-folder') - 0);
-                            }.bind(this)), state);
+                    if (last.plugins.length === 1) {
+                        last.plugins[0].toggleFolders(last.folders, state);
                     } else {
-                        this.props.db.getFolder(last.data('folder') - 0)
-                            .togglePlugins(last.toArray().map(function(elem) {
-                                return this.props.db.getPlugin(elem.getAttribute('data-plugin') - 0);
-                            }.bind(this)), state);
+                        last.folders[0].togglePlugins(last.plugins, state);
                     }
                 }
 
@@ -184,6 +191,10 @@
             }.bind(this);
 
             var scroll = function () {
+                if (ended) {
+                    return;
+                }
+
                 var sl = this._viewport.scrollLeft,
                     st = this._viewport.scrollTop;
 
@@ -197,28 +208,59 @@
             }.bind(this);
 
             var checkItems = function(evt) {
+                if (ended) {
+                    return;
+                }
+
                 var idx_t_h = Math.floor((evt.clientX - v.left + this._viewport.scrollLeft) / s),
                     idx_t_v = Math.floor((evt.clientY - v.top + this._viewport.scrollTop) / s),
-                    idx1, idx2, items;
+                    idx1, idx2, items, folders = [], plugins = [];
 
-                last.removeClass('toggling');
-                last.toggleClass('checked', !state);
+                last.items.removeClass('toggling');
+                last.items.toggleClass('checked', !state);
 
                 if (Math.abs(idx_t_h - idx_h) > Math.abs(idx_t_v - idx_v)) {
                     idx1 = Math.min(idx_t_h, idx_h);
                     idx2 = Math.max(idx_t_h, idx_h) + 1;
-                    items = t.parent().children().slice(idx1, idx2);
+
+                    plugins.push(this.props.db.getPlugin(t.attr('data-plugin') - 0));
+
+                    items = t.parent().children().slice(idx1, idx2).filter(function(i, elem) {
+                        var folder = this.props.db.getFolder(elem.getAttribute('data-folder') - 0);
+
+                        if (folder.hasPlugin(plugins[0]) !== state) {
+                            folders.push(folder);
+                            return true;
+                        }
+
+                        return false;
+                    }.bind(this));
 
                 } else {
                     idx1 = Math.min(idx_t_v, idx_v);
                     idx2 = Math.max(idx_t_v, idx_v) + 1;
-                    items = $g.children().slice(idx1, idx2).children(':nth-child(' + (idx_h + 1) + ')');
+
+                    folders.push(this.props.db.getFolder(t.attr('data-folder') - 0));
+
+                    items = $g.children().slice(idx1, idx2).children(':nth-child(' + (idx_h + 1) + ')').filter(function (i, elem) {
+                        var plugin = this.props.db.getPlugin(elem.getAttribute('data-plugin') - 0);
+
+                        if (folders[0].hasPlugin(plugin) !== state) {
+                            plugins.push(plugin);
+                            return true;
+                        }
+
+                        return false;
+                    }.bind(this));
 
                 }
 
                 items.toggleClass('checked', state);
                 items.addClass('toggling');
-                last = items;
+                last.items = items;
+                last.folders = folders;
+                last.plugins = plugins;
+
             }.bind(this);
 
             var checkScroll = function (evt) {
@@ -238,6 +280,10 @@
             }.bind(this);
 
             var move = function(evt) {
+                if (ended) {
+                    return;
+                }
+
                 last_mmevt = evt;
                 checkItems(evt);
                 checkScroll(evt);
@@ -247,14 +293,10 @@
             var esc = function (evt) {
                 if (evt.which === 27) {
                     evt.preventDefault();
+                    ended = true;
                     $d.off('.gw');
-
-                    if (last) {
-                        last.removeClass('toggling');
-                    }
-
-                    this.props.db.dispatch();
-
+                    last.items.removeClass('toggling');
+                    last.items.toggleClass('checked', !state);
                 }
             }.bind(this);
 
