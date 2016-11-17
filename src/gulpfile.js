@@ -75,28 +75,28 @@ gulp.task('watch', function () {
 gulp.task('cleanup-osx32', function () {
     return del([
         './../build/' + meta.name + '/osx32/**',
-        './../build/' + meta.name + '-osx32.zip'
+        './../build/' + meta.name + '-*-osx32.zip'
     ], {force: true});
 });
 
 gulp.task('cleanup-osx64', function () {
     return del([
         './../build/' + meta.name + '/osx64/**',
-        './../build/' + meta.name + '-osx64.zip'
+        './../build/' + meta.name + '-*-osx64.zip'
     ], {force: true});
 });
 
 gulp.task('cleanup-win32', function () {
     return del([
         './../build/' + meta.name + '/win32/**',
-        './../build/' + meta.name + '-win32.zip'
+        './../build/' + meta.name + '-*-win32.zip'
     ], {force: true});
 });
 
 gulp.task('cleanup-win64', function () {
     return del([
         './../build/' + meta.name + '/win64/**',
-        './../build/' + meta.name + '-win64.zip'
+        './../build/' + meta.name + '-*-win64.zip'
     ], {force: true});
 });
 
@@ -237,8 +237,8 @@ gulp.task('zip', ['zip-osx32', 'zip-osx64', 'zip-win32', 'zip-win64']);
 
 
 gulp.task('default', ['jsx', 'js', 'css']);
-gulp.task('dist', ['build', 'zip']);
-gulp.task('osx32', ['build-osx32', 'zip-osx32']);
-gulp.task('osx64', ['build-osx64', 'zip-osx64']);
-gulp.task('win32', ['build-win32', 'zip-win32']);
-gulp.task('win64', ['build-win64', 'zip-win64']);
+gulp.task('dist', ['cleanup', 'build', 'zip']);
+gulp.task('osx32', ['cleanup-osx32', 'build-osx32', 'zip-osx32']);
+gulp.task('osx64', ['cleanup-osx64', 'build-osx64', 'zip-osx64']);
+gulp.task('win32', ['cleanup-win32', 'build-win32', 'zip-win32']);
+gulp.task('win64', ['cleanup-win64', 'build-win64', 'zip-win64']);
