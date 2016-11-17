@@ -9,23 +9,41 @@
     "email": "me@subsonic.cz"
   },
   "repository": "jahudka/rearrangefx",
-  "dependencies": {
-    "font-awesome": "4.5.0",
-    "jquery": "2.1.4",
-    "lodash": "^3.10.1",
-    "promise": "7.1.1"
-  },
   "main": "app://rearrangefx/main.htm",
   "window": {
     "title": "RearrangeFX",
     "icon": "icons/icon.png",
     "toolbar": false,
     "frame": true,
-    "width": 700,
+    "width": 520,
     "height": 700,
     "position": "center",
     "min_width": 400,
     "min_height": 200,
     "fullscreen": false
+  },
+  "dependencies": {
+    "font-awesome": "4.5.0",
+    "jquery": "2.1.4",
+    "lodash": "^3.10.1",
+    "promise": "7.1.1",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-transform-es2015-destructuring": "^6.18.0",
+    "babel-plugin-transform-object-rest-spread": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "del": "^2.2.2",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-cli": "^1.2.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-less": "^3.3.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.0",
+    "gulp-zip": "^3.2.0",
+    "nw-builder": "^3.1.2"
   }
 }

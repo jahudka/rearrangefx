@@ -77,19 +77,32 @@
 
     var viewMenuItems = new gui.Menu();
 
-    Rea.menu.togglePlugins = new gui.MenuItem({
+    Rea.menu.viewMain = new gui.MenuItem({
         type: 'checkbox',
-        label: 'Show plugins',
+        label: 'Folder sorting',
         checked: true,
-        key: 'g',
+        key: '1',
         modifiers: cmdKey,
         click: function () {
-            Rea.api.togglePlugins();
+            Rea.api.viewMain();
 
         }
     });
 
-    viewMenuItems.append(Rea.menu.togglePlugins);
+    Rea.menu.viewAssignments = new gui.MenuItem({
+        type: 'checkbox',
+        label: 'Plugin assignments',
+        checked: false,
+        key: '2',
+        modifiers: cmdKey,
+        click: function () {
+            Rea.api.viewAssignments();
+
+        }
+    });
+
+    viewMenuItems.append(Rea.menu.viewMain);
+    viewMenuItems.append(Rea.menu.viewAssignments);
 
     var viewMenu = new gui.MenuItem({
         label: 'View',
@@ -144,7 +157,7 @@
     Rea.menu.sort = new gui.MenuItem({
         type: 'normal',
         label: 'Sort folders alphabetically',
-        key: 'a',
+        key: 'b',
         modifiers: cmdKey,
         click: function () {
             Rea.api.sort();

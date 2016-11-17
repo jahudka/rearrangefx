@@ -16,14 +16,19 @@
 
     };
 
-    lib.saveInitial = function saveInitial(config) {
-        Rea.state.original = JSON.stringify(config.folders);
-        return config;
+    lib.saveInitial = function saveInitial(db) {
+        Rea.state.original = JSON.stringify(db.exportData());
+        db.addListener(lib.save);
+        return db;
 
     };
 
     lib.save = function save() {
-        var state = JSON.stringify(Rea.lib.dom.serializeData());
+        if (Rea.state.loading) {
+            return;
+        }
+
+        var state = JSON.stringify(Rea.lib.db.exportData());
 
         if (state === (Rea.state.undo.length ? Rea.state.undo[Rea.state.undo.length - 1] : Rea.state.original)) {
             return;
@@ -39,8 +44,18 @@
 
     };
 
+    lib.load = function load(state) {
+        Rea.state.loading = true;
+
+        Rea.lib.db
+            .loadData(JSON.parse(state))
+            .dispatch();
+
+        Rea.state.loading = false;
+    };
+
     lib.revert = function revert() {
-        Rea.dom.loadData(JSON.parse(Rea.state.original));
+        lib.load(Rea.state.original);
 
         Rea.state.undo.splice(0, Rea.state.undo.length);
         Rea.state.redo.splice(0, Rea.state.redo.length);
@@ -58,10 +73,7 @@
 
         }
 
-        var state = JSON.parse(Rea.state.undo.length ? Rea.state.undo[Rea.state.undo.length - 1] : Rea.state.original);
-
-        Rea.lib.dom.loadData(state);
-
+        lib.load(Rea.state.undo.length ? Rea.state.undo[Rea.state.undo.length - 1] : Rea.state.original);
         lib.setDirty(Rea.state.undo.length > 0);
         Rea.menu.undo.enabled = Rea.state.dirty;
 
@@ -73,8 +85,7 @@
         if (state) {
             Rea.state.undo.push(state);
 
-            Rea.lib.dom.loadData(JSON.parse(state));
-
+            lib.load(state);
             lib.setDirty(true);
             Rea.menu.undo.enabled = true;
             Rea.menu.redo.enabled = Rea.state.redo.length > 0;

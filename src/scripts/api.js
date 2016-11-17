@@ -1,24 +1,20 @@
 (function (api) {
 
     api.newFolder = function newFolder(smart) {
-        var folder = Rea.lib.dom.addFolder('', smart);
+        var folder = Rea.lib.db.addFolder('', smart);
 
         if (smart) {
-            Rea.lib.dom.addPlugin(1048576, '', folder);
-            folder.addClass('open');
-
+            folder.addPlugin(new Rea.lib.db.Plugin(-1, 1048576, ''));
         }
 
-        Rea.lib.keyboard.setCursor(folder);
-
-        folder.find('.btn-edit').first().trigger('click');
-
+        window.requestAnimationFrame(function () {
+            $('#folders > li:last-child .btn-edit').trigger('click');
+        });
     };
 
 
     api.sort = function sort() {
-        Rea.lib.dom.sortMainList();
-        Rea.lib.state.save();
+        Rea.lib.db.sortFolders();
 
     };
 
@@ -64,7 +60,7 @@
         }
 
         if (Rea.config.createBackup) {
-            return Rea.lib.file.backup().then(Rea.lib.file.save);
+            return Rea.lib.file.backup().then(Rea.lib.file.save).catch(function(err) {console.log(err);});
 
         } else {
             return Rea.lib.file.save();
@@ -73,7 +69,7 @@
     };
 
     api.revert = function revert() {
-        api.checkChanges().then(function() {
+        api.checkChanges('continue').then(function() {
             Rea.lib.state.revert();
 
         });
@@ -90,6 +86,63 @@
     };
 
 
+    api.viewMain = function viewMain() {
+        var $btnMain = $('#btn-view-main'),
+            $btnAssignments = $('#btn-view-assignments'),
+            $mainToolbar = $('#toolbar-main'),
+            w = gui.Window.get();
+
+        if (Rea.lib.dom.getView() === 'main') {
+            return;
+        }
+
+        Rea.lib.dom.setView('main').render();
+
+        Rea.menu.newFolder.enabled = true;
+        Rea.menu.newSmartFolder.enabled = true;
+        Rea.menu.sort.enabled = true;
+        Rea.menu.viewAssignments.checked = false;
+        Rea.menu.viewMain.checked = true;
+
+        $btnMain.toggleClass('active', true);
+        $btnAssignments.toggleClass('active', false);
+        $mainToolbar.css('display', '');
+
+        window.requestAnimationFrame(function() {
+            w.resizeTo(520, 700);
+            w.moveTo((screen.width - 520) / 2, (screen.height - 700) / 2);
+        });
+    };
+
+    api.viewAssignments = function viewAssignments() {
+        var $btnMain = $('#btn-view-main'),
+            $btnAssignments = $('#btn-view-assignments'),
+            $mainToolbar = $('#toolbar-main'),
+            w = gui.Window.get();
+
+        if (Rea.lib.dom.getView() === 'assignments') {
+            return;
+        }
+
+        Rea.lib.dom.setView('assignments').render();
+
+        Rea.menu.newFolder.enabled = false;
+        Rea.menu.newSmartFolder.enabled = false;
+        Rea.menu.sort.enabled = false;
+        Rea.menu.viewMain.checked = false;
+        Rea.menu.viewAssignments.checked = true;
+
+        $btnAssignments.toggleClass('active', true);
+        $btnMain.toggleClass('active', false);
+        $mainToolbar.css('display', 'none');
+
+        window.requestAnimationFrame(function () {
+            w.resizeTo(840, 700);
+            w.moveTo((screen.width - 840) / 2, (screen.height - 700) / 2);
+        });
+    };
+
+
     api.openDialog = function openDialog(id) {
         var dlg = $('#' + id + '-holder');
 
@@ -101,7 +154,6 @@
         dlg.trigger('dialog-open');
 
         dlg.addClass('visible');
-        Rea.lib.keyboard.setEnabled(false);
 
         var $d = $(document);
         dlg.find('button.focus').first().trigger('focus');
@@ -109,7 +161,6 @@
         function close() {
             dlg.removeClass('visible');
             $d.off('.dlg');
-            Rea.lib.keyboard.setEnabled(true);
 
         }
 
@@ -139,13 +190,6 @@
         });
 
         return dlg;
-
-    };
-
-    api.togglePlugins = function togglePlugins() {
-        var $pluginsPanel = $('#plugins-panel');
-        $pluginsPanel.toggleClass('visible');
-        Rea.menu.togglePlugins.checked = $pluginsPanel.hasClass('visible');
 
     };
 

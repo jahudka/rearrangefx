@@ -1,16 +1,15 @@
 (function (lib) {
 
     lib.save = function save() {
-        var data = Rea.lib.dom.serializeData();
-        data = Rea.lib.config.formatIniData(data);
+        var data = Rea.lib.db.exportData();
+        data = Rea.lib.io.formatIniData(data);
         data = ini.stringify(data);
 
         return fs.writeFile(path.join(Rea.config.dataPath, 'reaper-fxfolders.ini'), data)
             .then(function () {
                 Rea.lib.state.setDirty(false);
-
-            }, function () {
-                // ??
+            }, function (err) {
+                Rea.debug && console.error(err);
             });
     };
 

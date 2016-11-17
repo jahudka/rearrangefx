@@ -1,3 +1,8 @@
+### v1.0.0
+ - added plugin assignment grid
+ - removed plugin lists from folders
+ - reworked build pipeline to gulp
+
 ### v0.0.10
  - added alphabetic sorting
  - added toolbar

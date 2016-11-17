@@ -3,20 +3,12 @@
     Rea.api.init = function () {
         Rea.lib.dom.cleanup();
         Rea.lib.state.cleanup();
-        Rea.lib.keyboard.setEnabled(true);
 
         Rea.dataPathCheck
-            .then(Rea.lib.config.load)
-            .then(Rea.lib.config.parse)
+            .then(Rea.lib.io.load)
+            .then(Rea.lib.db.loadData)
             .then(Rea.lib.state.saveInitial)
-            .then(Rea.lib.dom.populateFolders)
-            .then(Rea.lib.dom.populatePlugins)
-            .then(Rea.lib.dom.installToggleHandler)
-            .then(Rea.lib.dom.installEditHandler)
-            .then(Rea.lib.dom.installRemoveHandler)
-            .then(Rea.lib.dom.installReorderHandler)
-            .then(Rea.lib.dom.installInsertHandler)
-            .then(Rea.lib.dom.installToolbarHandler)
+            .then(Rea.lib.dom.init)
             .catch(function(err) {
                 Rea.debug && console.error(err);
 

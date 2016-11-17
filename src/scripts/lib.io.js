@@ -10,62 +10,49 @@
                         NbFolders: 0
                     }
                 };
-            });
+            })
+            .then(lib.parse);
     };
 
-    lib.parse = function parse(config) {
+    lib.parse = function parse(data) {
         var folders = [],
-            registry = {2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 1000: {}},
-            folder, plugins, f, nf, p, np, type, id;
+            folder, plugins, f, nf, p, np;
 
-        if (!config.Folders || !config.Folders.NbFolders) {
-            return {
-                folders: folders,
-                plugins: _.mapValues(registry, function() { return []; })
-            };
+        if (!data.Folders || !data.Folders.NbFolders) {
+            return folders;
         }
 
-        for (f = 0, nf = config.Folders.NbFolders; f < nf; f++) {
+        for (f = 0, nf = data.Folders.NbFolders; f < nf; f++) {
             folder = {
-                name: config.Folders['Name' + f],
+                name: data.Folders['Name' + f],
+                smart: false,
                 plugins: []
             };
 
             folders.push(folder);
 
-            if (config.hasOwnProperty('Folder' + f)) {
-                plugins = config['Folder' + f];
+            if (data.hasOwnProperty('Folder' + f)) {
+                plugins = data['Folder' + f];
 
                 if (plugins.Nb === 1 && !(plugins.Type0 in Rea.lib.pluginTypes)) {
                     folder.smart = true;
                     folder.plugins.push({
                         type: plugins.Type0,
-                        id: plugins.Item0
+                        name: plugins.Item0
                     });
-
                 } else {
                     for (p = 0, np = plugins.Nb; p < np; p++) {
-                        type = plugins['Type' + p];
-                        id = plugins['Item' + p];
-
-                        if (!registry[type][id]) {
-                            registry[type][id] = true;
-
-                        }
-
                         folder.plugins.push({
-                            type: type,
-                            id: id
+                            type: plugins['Type' + p],
+                            name: plugins['Item' + p]
                         });
                     }
                 }
             }
         }
 
-        return {
-            folders: folders,
-            plugins: _.mapValues(registry, function(plugins) { return _.keys(plugins); })
-        };
+        return folders;
+
     };
 
 
@@ -92,7 +79,7 @@
                 plugin = folder.plugins[p];
 
                 plugins['Type' + p] = plugin.type;
-                plugins['Item' + p] = plugin.id;
+                plugins['Item' + p] = plugin.name;
 
             }
         }
@@ -101,4 +88,4 @@
 
     };
 
-})(Rea.lib.config);
+})(Rea.lib.io);

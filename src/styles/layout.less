@@ -1,0 +1,96 @@
+#toolbar {
+    flex: 0 0 auto;
+    display: flex;
+    flex-flow: row nowrap;
+    padding: 0 5px;
+    background: #212121;
+    border-bottom: 1px solid #777;
+
+    .btn {
+        position: relative;
+        display: block;
+        margin: 5px;
+        -webkit-box-sizing: content-box;
+        box-sizing: content-box;
+        border: 1px solid #5a5a5a;
+        background: #212121;
+        color: #bababa;
+        font-size: 15px;
+        line-height: 15px;
+        cursor: pointer;
+
+        &:hover, &.active {
+            z-index: 2;
+            background: #2b2b2b;
+            color: #fff;
+            border-color: #fff;
+        }
+
+        &.toolbar-right {
+            margin-left: auto;
+        }
+
+        .btn-stack-top {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.6em;
+        }
+    }
+
+    .btn-group {
+        display: flex;
+        flex-flow: row nowrap;
+        margin: 5px;
+
+        .btn {
+            margin: 0;
+
+            & + .btn {
+                margin-left: -1px;
+            }
+        }
+
+        .separator {
+            display: block;
+            margin: auto 2px;
+            height: 12px;
+            border-left: 1px solid #444;
+        }
+    }
+}
+
+#main {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+.main-panel {
+    flex: 1 1 auto;
+    display: flex;
+    flex-flow: column nowrap;
+
+    .panel-heading {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 10px 5px;
+    }
+
+    .panel-content {
+        flex: 1 1 auto;
+    }
+
+    .panel-footer {
+        flex: 0 0 auto;
+        margin: 0;
+        padding: 5px;
+        text-align: center;
+    }
+
+    .hint {
+        color: #5a5a5a;
+        font-size: 0.8em;
+        font-style: italic;
+    }
+}

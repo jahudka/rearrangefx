@@ -35,8 +35,11 @@ var Rea = (function () {
             redo: []
         },
 
+        Components: {},
+
         lib: {
-            config: {},
+            io: {},
+            db: {},
             dom: {},
             file: {},
             state: {},
