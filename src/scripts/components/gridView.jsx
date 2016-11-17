@@ -90,6 +90,10 @@
                             return (
                                 <tr key={plugin.getId()}>
                                     {this.props.folders.map(function (folder) {
+                                        if (folder.isSmart()) {
+                                            return null;
+                                        }
+
                                         return (
                                             <td
                                                 className={folder.hasPlugin(plugin) ? 'checked' : ''} data-folder={folder.getId()} data-plugin={plugin.getId()}
