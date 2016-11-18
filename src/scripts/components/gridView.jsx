@@ -10,6 +10,12 @@
                 .on('mouseenter.gw', 'td', this._updateRulers)
                 .on('mouseleave.gw', this._hideRulers);
 
+            if (this._viewport.offsetWidth > this._viewport.clientWidth) {
+                var s = this._viewport.offsetWidth - this._viewport.clientWidth;
+                this._folders.style.right = s + 'px';
+                this._plugins.style.bottom = s + 'px';
+            }
+
             this._scrollFrame = null;
         },
 
@@ -179,6 +185,13 @@
                 ended = true;
 
                 $d.off('.gw');
+
+                if (scrolling) {
+                    window.cancelAnimationFrame(scr_frame);
+                    scrolling = false;
+                    scr_frame = null;
+                    this._lock = false;
+                }
 
                 if (last) {
                     last.items.removeClass('toggling');
