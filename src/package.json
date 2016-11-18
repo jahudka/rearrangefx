@@ -1,6 +1,6 @@
 {
   "name": "RearrangeFX",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simplify REAPER FX Folders management",
   "homepage": "https://rearrangefx.github.io",
   "license": "MIT",
@@ -15,7 +15,7 @@
     "icon": "icons/icon.png",
     "toolbar": false,
     "frame": true,
-    "width": 520,
+    "width": 580,
     "height": 700,
     "position": "center",
     "min_width": 400,

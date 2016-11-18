@@ -1,28 +1,132 @@
 (function (React, Components) {
 
 	Components.FolderView = React.createClass({
+	    getInitialState: function () {
+            return {
+                activeFolder: null
+            };
+        },
+
+        componentWillReceiveProps: function () {
+            if (this.state.activeFolder && !this.props.db.getFolder(this.state.activeFolder)) {
+                this.setState({
+                    activeFolder: null
+                });
+            }
+        },
+
 	    componentDidMount: function () {
-            $(this._list).on('dragstart.fw', 'li', this._handleDragStart);
+            $(this._list)
+                .on('dragstart.fw', 'li', this._handleDragStart)
+                .on('click.fw', 'li', this._handleClick);
+
+            $(document).on('keydown.fw', this._handleKey);
         },
 
         componentWillUnmount: function () {
-            $(this._list).off('.fw');
+            $(this._elem).off('.fw');
+            $(document).off('.fw');
         },
 
 		render: function () {
 			return (
 				<div id="folders-panel" className="main-panel">
 					<h3 className="panel-heading">FX Folders</h3>
-					<ul id="folders" className="panel-content folder-list" ref={function(elem) { this._list = elem; }.bind(this)}>
-						{this.props.folders.map(function (folder) {
-							return (
-								<Components.Folder key={folder.getId()} id={folder.getId()} name={folder.getName()} smart={folder.isSmart()} db={this.props.db} />
-							);
-						}.bind(this))}
-					</ul>
+                    <div className="panel-content">
+                        <ul id="folders" ref={function(elem) { this._list = elem; }.bind(this)}>
+                            {this.props.folders.map(function (folder) {
+                                return (
+                                    <Components.Folder key={folder.getId()} active={folder.getId() === this.state.activeFolder} id={folder.getId()} name={folder.getName()} smart={folder.isSmart()} db={this.props.db} />
+                                );
+                            }.bind(this))}
+                        </ul>
+                        {this.state.activeFolder ? this._renderFolder() : null}
+                    </div>
 				</div>
 			);
 		},
+
+        _renderFolder: function () {
+		    var folder = this.props.db.getFolder(this.state.activeFolder);
+
+            if (folder.isSmart()) {
+                return (
+                    <div id="smart-folder">
+                        Filter:<br />
+                        <input type="text" defaultValue={folder.getPlugins()[0].getName()} id="smart-folder-filter" onBlur={this._handleBlur} />
+                    </div>
+                );
+            } else {
+                return (
+                    <ul id="plugins">
+                        {folder.getPlugins().map(function (plugin) {
+                            var label = Rea.lib.pluginTypes[plugin.getType()] + ': ' + plugin.getName(true);
+
+                            return (
+                                <li title={label}>{label}</li>
+                            );
+                        }.bind(this))}
+                    </ul>
+                );
+            }
+        },
+
+        _handleClick: function (evt) {
+		    if (evt.isDefaultPrevented() || evt.target.tagName === 'BUTTON') {
+		        return;
+            }
+
+            var t = $(evt.currentTarget),
+                id = t.data('id');
+
+            if (t.hasClass('renaming')) {
+                return;
+            }
+
+            if (id === this.state.activeFolder) {
+                this.setState({
+                    activeFolder: null
+                });
+            } else {
+                this.setState({
+                    activeFolder: id
+                });
+            }
+        },
+
+        _handleKey: function (evt) {
+            if (evt.target.id === 'smart-folder-filter') {
+                if (evt.which === 13 || evt.which === 27) {
+                    evt.preventDefault();
+
+                    if (evt.which === 27) {
+                        evt.target.value = this.props.db
+                            .getFolder(this.state.activeFolder)
+                            .getPlugins()[0]
+                            .getName();
+                    }
+
+                    evt.target.blur();
+
+                }
+            } else if (this.state.activeFolder && evt.which === 27) {
+                this.setState({
+                    activeFolder: null
+                });
+            }
+        },
+
+        _handleBlur: function (evt) {
+            var plugin = this.props.db
+                .getFolder(this.state.activeFolder)
+                .getPlugins()[0];
+
+            if (plugin.getName() !== evt.target.value) {
+                plugin.setName(evt.target.value);
+                this.props.db.dispatch();
+
+            }
+        },
 
         _handleDragStart: function (evt) {
             var t = $(evt.currentTarget),

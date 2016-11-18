@@ -3,7 +3,7 @@
 	Components.Folder = React.createClass({
 		render: function () {
 			return (
-				<li className={this.props.active ? 'active' : ''} data-id={this.props.id} draggable={true} ref={function(elem) { this._elem = elem; }.bind(this)}>
+				<li className={this.props.active ? 'active' : ''} data-id={this.props.id} draggable={true} ref={function(elem) { this._elem = $(elem); }.bind(this)}>
 					<i className="item-handle fa fa-reorder" />
 					<span className="item-label" ref={function(elem) { this._label = $(elem); }.bind(this)}>{this.props.name}</span>
 					<button className="btn btn-edit fa fa-edit" onClick={this._handleRename} />
@@ -12,7 +12,10 @@
 			);
 		},
 
-        _handleRename: function () {
+        _handleRename: function (evt) {
+		    evt.preventDefault();
+
+            this._elem.addClass('renaming');
             this._label.prop('contentEditable', true);
             this._label.on('keydown.fr keyup.fr keypress.fr', this._handleKey);
             this._label.on('blur.fr', this._handleBlur);
@@ -34,6 +37,8 @@
         },
 
         _handleBlur: function () {
+            this._elem.removeClass('renaming');
+            this._label.prop('contentEditable', false);
             this._label.off('.fr');
 
             var t = this._label.text().trim();
@@ -43,7 +48,8 @@
             }
         },
 
-        _handleRemove: function () {
+        _handleRemove: function (evt) {
+            evt.preventDefault();
             this.props.db.removeFolder(this.props.id);
         }
 	});

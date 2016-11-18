@@ -9,22 +9,7 @@ var gulp = require('gulp'),
     NwBuilder = require('nw-builder'),
     meta = require('./package.json');
 
-gulp.task('jsx', function () {
-    return gulp.src('scripts/**/*.jsx')
-        .pipe(babel({
-            presets: [
-                "react"
-            ],
-            plugins: [
-                "transform-es2015-destructuring",
-                "transform-object-rest-spread"
-            ]
-        }))
-        .pipe(rename({extname: '.js'}))
-        .pipe(gulp.dest('scripts/'));
-});
-
-gulp.task('js', ['jsx'], function () {
+function compile_js() {
     return gulp.src([
         'node_modules/jquery/dist/jquery.min.js',
         'node_modules/react/dist/react.min.js',
@@ -45,10 +30,34 @@ gulp.task('js', ['jsx'], function () {
         'scripts/updateCheck.js',
         'scripts/main.js'
     ])
-    .pipe(concat('rfx.min.js'))
-    .pipe(uglify({
-        compress: true
-    })).pipe(gulp.dest('scripts/'));
+        .pipe(concat('rfx.min.js'))
+        .pipe(uglify({
+            compress: true
+        })).pipe(gulp.dest('scripts/'));
+}
+
+gulp.task('jsx', function () {
+    return gulp.src('scripts/**/*.jsx')
+        .pipe(babel({
+            presets: [
+                "react"
+            ],
+            plugins: [
+                "transform-es2015-destructuring",
+                "transform-object-rest-spread"
+            ]
+        }))
+        .pipe(rename({extname: '.js'}))
+        .pipe(gulp.dest('scripts/'));
+
+});
+
+gulp.task('js-nd', function () {
+    return compile_js();
+});
+
+gulp.task('js', ['jsx'], function () {
+    return compile_js();
 });
 
 gulp.task('css', function () {
@@ -65,7 +74,7 @@ gulp.task('css', function () {
 
 gulp.task('watch', function () {
     gulp.watch(['scripts/**/*.jsx'], ['jsx']);
-    gulp.watch(['scripts/**/*.js', '!scripts/rfx.min.js'], ['js']);
+    gulp.watch(['scripts/**/*.js', '!scripts/rfx.min.js'], ['js-nd']);
     gulp.watch(['styles/**/*.{css,less}', '!styles/rfx.min.css'], ['css']);
 });
 
@@ -236,7 +245,7 @@ gulp.task('zip', ['zip-osx32', 'zip-osx64', 'zip-win32', 'zip-win64']);
 
 
 
-gulp.task('default', ['jsx', 'js', 'css']);
+gulp.task('default', ['js', 'css']);
 gulp.task('dist', ['cleanup', 'build', 'zip']);
 gulp.task('osx32', ['cleanup-osx32', 'build-osx32', 'zip-osx32']);
 gulp.task('osx64', ['cleanup-osx64', 'build-osx64', 'zip-osx64']);

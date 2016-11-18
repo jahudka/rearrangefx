@@ -1,6 +1,7 @@
 # Build directory
 /build
 /src/cache
+/src/node_modules
 /src/scripts/components/*.js
 /src/scripts/rfx.min.js
 /src/styles/rfx.min.css
