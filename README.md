@@ -19,7 +19,7 @@ of my custom FX folders in REAPER via drag'n'drop.
 
 So, whaaaaat....?
 -----------------
-Download, unzip, run. If you have a really weird setup (ie. REAPER data directory doesn't sit at `%appData%/REAPER`),
+[Download](http://jahudka.github.io/rearrangefx/), unzip, run. If you have a really weird setup (ie. REAPER data directory doesn't sit at `%appData%/REAPER`),
 the app will start by showing you the Preferences pane.
 
 The app has two main view modes: folder sorting and plugin assignment. Folder sorting just shows a list of all your
