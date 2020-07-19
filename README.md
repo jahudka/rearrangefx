@@ -1,3 +1,8 @@
+RearrangeFX is now obsolete!
+============================
+
+Took a while, but you can now reorder user folders directly inside the Plugin manager window in REAPER, which makes this tool obsolete. Yayy!!
+
 RearrangeFX
 ===========
 
